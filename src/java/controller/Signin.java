@@ -30,4 +30,26 @@ public class Signin extends HttpServlet {
         request.getRequestDispatcher("signup.jsp").forward(request, response);
     }
 
-  
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String username = request.getParameter("user");
+        String password = request.getParameter("pass");
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        LoginDAO loginDAO = new LoginDAO();
+        Account account = loginDAO.checkAccountExist(username);
+        if (account != null) {
+            request.setAttribute("message", "Thông tin đăng kí không hợp lệ. Vui lòng thử lại");
+            request.getRequestDispatcher("signup.jsp").forward(request, response);
+        } else {
+            loginDAO.signup(username, password, name, phone, address);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+        }
+    }
+
+}
