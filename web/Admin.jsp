@@ -106,4 +106,57 @@
             Welcome, Admin
         </div>
 
+        <!-- Conditional content based on 'section' parameter -->
+        <c:choose>
+            <c:when test="${param.section == 'orders'}">
+                <!-- Orders Table -->
+                <div class="table-container">
+                    <h2>Order Management</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th>Flower Name</th>
+                                <th>Quantity</th>
+                                <th>Order Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="order" items="${orderList}">
+                                <tr>
+                                    <td>${order.id}</td>
+                                    <td>${order.customerName}</td>
+                                    <td>${order.phone}</td>
+                                    <td>${order.address}</td>
+                                    <td>${order.flowerName}</td>
+                                    <td>${order.quantity}</td>
+                                    <td>${order.orderDate}</td>
+                                    <td><a href="admin?id=${order.id}&mode=1">Edit</a> | 
+                                        <a href="admin?id=${order.id}&mode=2" onclick="return confirm('Are you sure you want to delete this order?');">Delete</a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <!-- Default Content -->
+                <div class="section">
+                    <h2>Welcome to the FloSun Shop Admin Dashboard</h2>
+                    <p>Select an option from the sidebar to manage the system.</p>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024 Flower Shop. All rights reserved.
+    </div>
+</body>
 </html>
