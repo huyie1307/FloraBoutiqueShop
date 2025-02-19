@@ -8,6 +8,14 @@
         <servlet-name>Signin</servlet-name>
         <servlet-class>controller.Signin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListProductController</servlet-name>
+        <servlet-class>controller.ListProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddProductController</servlet-name>
+        <servlet-class>controller.AddProductController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -15,5 +23,13 @@
     <servlet-mapping>
         <servlet-name>Signin</servlet-name>
         <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListProductController</servlet-name>
+        <url-pattern>/listProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductController</servlet-name>
+        <url-pattern>/addProduct</url-pattern>
     </servlet-mapping>
 </web-app>
