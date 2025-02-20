@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.PrintWriter;
 
 public class LoginManagerServlet extends HttpServlet {
 
@@ -47,6 +46,9 @@ public class LoginManagerServlet extends HttpServlet {
             session.setAttribute("user", user);
             session.setAttribute("account", account);
             session.setMaxInactiveInterval(1800); // Session 30 phút
+            
+            System.out.println(user);
+            System.out.println(account);
 
             response.sendRedirect("index.html"); // Redirect thay vì forward
         }

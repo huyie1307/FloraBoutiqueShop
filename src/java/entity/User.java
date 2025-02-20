@@ -5,27 +5,22 @@ import java.util.Date;
 public class User {
 
     private int id;
-    private String contactName;
-    private String username;
+    private String name;
+    private Date dob;
     private String phone;
     private String address;
-    private String role;
-    private Date createdAt;
 
     public User() {
     }
 
-    public User(int id, String contactName, String username, String phone, String address, String role, Date createdAt) {
+    public User(int id, String name, Date dob, String phone, String address) {
         this.id = id;
-        this.contactName = contactName;
-        this.username = username;
+        this.name = name;
+        this.dob = dob;
         this.phone = phone;
         this.address = address;
-        this.role = role;
-        this.createdAt = createdAt;
     }
 
-    // Getters và Setters
     public int getId() {
         return id;
     }
@@ -34,20 +29,20 @@ public class User {
         this.id = id;
     }
 
-    public String getContactName() {
-        return contactName;
+    public String getName() {
+        return name;
     }
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getUsername() {
-        return username;
+    public Date getDob() {
+        return dob;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setDob(Date dob) {
+        this.dob = dob;
     }
 
     public String getPhone() {
@@ -66,25 +61,9 @@ public class User {
         this.address = address;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Override
     public String toString() {
-        return "User{id=" + id + ", contactName='" + contactName + "', username='" + username
-                + "', phone='" + phone + "', address='" + address + "', role='" + role + "', createdAt=" + createdAt + "}";
+        return "User{" + "id=" + id + ", name=" + name + ", dob=" + dob + ", phone=" + phone + ", address=" + address + '}';
     }
+
 }

@@ -2,15 +2,21 @@ package entity;
 
 public class Account {
 
-   private int id;
-   private String contactName;
-   private String username;
-   private String password;
-   private int phone;
-   private String address;
+    private int id;
+    private String username;
+    private String password;
+    private boolean isSell;
+    private boolean isAdmin;
 
-   
     public Account() {
+    }
+
+    public Account(int id, String username, String password, boolean isSell, boolean isAdmin) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.isSell = isSell;
+        this.isAdmin = isAdmin;
     }
 
     public int getId() {
@@ -19,14 +25,6 @@ public class Account {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
     }
 
     public String getUsername() {
@@ -45,22 +43,25 @@ public class Account {
         this.password = password;
     }
 
-    public int getPhone() {
-        return phone;
+    public boolean isIsSell() {
+        return isSell;
     }
 
-    public void setPhone(int phone) {
-        this.phone = phone;
+    public void setIsSell(boolean isSell) {
+        this.isSell = isSell;
     }
 
-    public String getAddress() {
-        return address;
+    public boolean isIsAdmin() {
+        return isAdmin;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
-   
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", isSell=" + isSell + ", isAdmin=" + isAdmin + '}';
+    }
 
 }

@@ -13,7 +13,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -40,14 +39,13 @@ public class Signin extends HttpServlet {
         String password = request.getParameter("pass");
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
         LoginDAO loginDAO = new LoginDAO();
         Account account = loginDAO.checkAccountExist(username);
         if (account != null) {
             request.setAttribute("message", "Thông tin đăng kí không hợp lệ. Vui lòng thử lại");
             request.getRequestDispatcher("signup.jsp").forward(request, response);
         } else {
-            loginDAO.signup(username, password, name, phone, address);
+            loginDAO.signup(username, password, name, phone);
             request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
     }
