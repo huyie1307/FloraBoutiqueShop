@@ -11,6 +11,12 @@
     <servlet>
         <servlet-name>Admin</servlet-name>
         <servlet-class>controller.Admin</servlet-class>
+        <servlet-name>ListProductController</servlet-name>
+        <servlet-class>controller.ListProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddProductController</servlet-name>
+        <servlet-class>controller.AddProductController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -23,5 +29,11 @@
     <servlet-mapping>
         <servlet-name>Admin</servlet-name>
         <url-pattern>/admin</url-pattern>
+        <servlet-name>ListProductController</servlet-name>
+        <url-pattern>/listProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductController</servlet-name>
+        <url-pattern>/addProduct</url-pattern>
     </servlet-mapping>
 </web-app>

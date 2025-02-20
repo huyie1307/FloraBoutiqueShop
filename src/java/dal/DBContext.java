@@ -11,7 +11,7 @@ public class DBContext {
     protected Connection connection;
 
     private final String serverName = "localhost";
-    private final String dbName = "FlowerShop";
+    private final String dbName = "Wish";
     private final String portNumber = "1433";
     private final String userName = "sa";
     private final String password = "123";
