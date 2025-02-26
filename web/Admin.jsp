@@ -16,33 +16,18 @@
     </style>
 </head>
 <body>
-
+ 
     <!-- Sidebar -->
     <div class="sidebar">
         <h4 class="text-center text-white">Admin Panel</h4>
-        <a href="#" onclick="loadPage('admin?action=dashboard')">📊 Dashboard</a>
-        <a href="#" onclick="loadPage('admin?action=orders')">📦 Orders</a>
-        <a href="#" onclick="loadPage('admin?action=revenue')">📈 Revenue</a>
-        <a href="#" onclick="loadPage('admin?action=cus')">👤 Users</a>
+        <a href="admin?action=dashboard">📊 Dashboard</a>
+        <a href="admin?action=orders">📦 Orders</a>
+        <a href="admin?action=revenue">📈 Revenue</a>
+        <a href="admin?action=cus">👤 Users</a>
     </div>
+    
 
-    <div class="content">
-        <h2>Chào mừng đến với Admin Dashboard</h2>
-        <div id="main-content">
-            <p>Chọn một mục trong sidebar để quản lý dữ liệu.</p>
-        </div>
-    </div>
-
-    <script>
-       function loadPage(url) {
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('main-content').innerHTML = data;
-            })
-            .catch(error => console.error('Lỗi khi tải trang:', error));
-    }
-    </script>
+    
 
 </body>
 </html>
