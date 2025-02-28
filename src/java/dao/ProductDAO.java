@@ -46,44 +46,32 @@ public class ProductDAO extends DBContext {
         return productList;
     }
     
-    public void addProduct(String name, String image, int amount, double price, 
-                           String title, String description, String categoryName) {
-        String insertProductSQL = "INSERT INTO [dbo].[Product] "
-                                + "([name], [image], [amount], [price], [title], [description], [cateID], [sell_ID]) "
-                                + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
-
-        String getCategorySQL = "SELECT cid FROM [dbo].[Category] WHERE cname = ?";
-
+      public void addProduct(Product p) {
+        String sql = "INSERT INTO [dbo].[Product]\n"
+                + "           ([name]\n"
+                + "           ,[image]\n"
+                + "           ,[price]\n"
+                + "           ,[title]\n"
+                + "           ,[description]\n"
+                + "           ,[cateID])\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?)";
         try {
-            // Lấy cateID dựa trên tên danh mục
-            PreparedStatement stmtCategory = connection.prepareStatement(getCategorySQL);
-            stmtCategory.setString(1, categoryName);
-            ResultSet rsCategory = stmtCategory.executeQuery();
-
-            if (rsCategory.next()) {
-                int cateID = rsCategory.getInt("cid");
-
-                // Thêm sản phẩm vào bảng Product
-                PreparedStatement stmtProduct = connection.prepareStatement(insertProductSQL);
-                stmtProduct.setString(1, name);
-                stmtProduct.setString(2, image);
-                stmtProduct.setInt(3, amount);
-                stmtProduct.setDouble(4, price);
-                stmtProduct.setString(5, title);
-                stmtProduct.setString(6, description);
-                stmtProduct.setInt(7, cateID);
-
-                // Thực thi câu lệnh INSERT
-                stmtProduct.executeUpdate();
-            } else {
-                // Nếu không tìm thấy category, ném ngoại lệ
-                throw new SQLException("Category not found: " + categoryName);
-            }
-
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, p.getName());
+            stm.setString(2, p.getImage());
+            stm.setDouble(3, p.getPrice());
+            stm.setString(4, p.getTitle());
+            stm.setString(5, p.getDescription());
+            stm.setInt(6, p.getCategory().getId());
+            stm.executeUpdate();
         } catch (SQLException ex) {
-            // Log lỗi hoặc ném ngoại lệ ra ngoài (hoặc có thể thông báo cho người dùng)
-            ex.printStackTrace();
-            throw new RuntimeException("Error adding product: " + ex.getMessage());
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
+    }
 }

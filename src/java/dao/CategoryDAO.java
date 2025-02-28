@@ -35,4 +35,22 @@ public class CategoryDAO extends DBContext {
         }
         return categories;
     }
+      public Category getCategoryByName(String categoryName) {
+        String sql = "SELECT cid, cname, url FROM Category WHERE cname = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, categoryName);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                // Tạo đối tượng Category với đầy đủ dữ liệu
+                Category category = new Category();
+                category.setId(rs.getInt("cid"));
+                category.setName(rs.getString("cname"));
+                category.setUrl(rs.getString("url")); // Lấy URL của danh mục
+                return category;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, "Lỗi khi truy vấn danh mục theo tên", ex);
+        }
+        return null; // Trả về null nếu không tìm thấy danh mục
+    }
 }
