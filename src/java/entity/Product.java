@@ -10,6 +10,14 @@ public class Product {
     private String description;
     private Category category;
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public int getId() {
         return id;
     }
@@ -34,14 +42,7 @@ public class Product {
         this.image = image;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
+   
     public double getPrice() {
         return price;
     }

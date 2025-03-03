@@ -22,9 +22,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet">
 
         <!-- Choose your prefered color scheme -->
-        <!-- <link href="css/light.css" rel="stylesheet"> -->
-        <!-- <link href="css/dark.css" rel="stylesheet"> -->
-
+        <link href="css/light.css" rel="stylesheet"> 
+        <link href="css/dark.css" rel="stylesheet"> 
         <!-- BEGIN SETTINGS -->
         <!-- Remove this after purchasing -->
         <link class="js-stylesheet" href="css/light.css" rel="stylesheet">
@@ -412,7 +411,6 @@
                     <div class="container-fluid p-0">
                         <div class="row">
                             <div class="col-12">
-
                                 <div class="card">
                                     <div class="card-body">
                                         <!-- Nút mở modal để thêm sản phẩm -->
@@ -429,7 +427,6 @@
                                                     <th>ID</th>
                                                     <th>Name</th>
                                                     <th>Image</th>
-                                                    <th>Amount</th>
                                                     <th>Price</th>
                                                     <th>Title</th>
                                                     <th>Description</th>
@@ -445,7 +442,6 @@
                                                         <td>
                                                             <img src="${p.image}" alt="${p.name}" width="100" height="100" />
                                                         </td>
-                                                        <td>${p.amount}</td>
                                                         <td>${p.price}</td>
                                                         <td>${p.title}</td>
                                                         <td>${p.description}</td>
@@ -458,9 +454,51 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </main>
+
+                <!-- Modal Thêm Sản Phẩm -->
+                <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addProductModalLabel">Thêm Sản Phẩm</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="addProduct" method="post" enctype="multipart/form-data">
+                                    <label for="name">Tên sản phẩm:</label>
+                                    <input type="text" name="name" class="form-control" required><br>
+
+                                    <label for="title">Tiêu đề:</label>
+                                    <input type="text" name="title" class="form-control" required><br>
+
+                                    <label for="description">Mô tả:</label>
+                                    <textarea name="description" class="form-control" required></textarea><br>
+
+                                    <label for="categoryId">Danh mục:</label>
+                                    <select name="categoryId" class="form-control" required>
+                                        <c:forEach var="category" items="${category}">
+                                            <option value="${category.id}">${category.name}</option>
+                                        </c:forEach>
+                                    </select><br>
+
+                                    <label for="price">Giá:</label>
+                                    <input type="number" name="price" step="0.01" class="form-control" required><br>
+
+                                    <label for="amount">Số lượng:</label>
+                                    <input type="number" name="amount" class="form-control" required><br>
+
+                                    <label for="image">Ảnh sản phẩm:</label>
+                                    <input type="file" name="image" class="form-control" accept="image/*"><br>
+
+                                    <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
 
                 <footer class="footer">
@@ -526,6 +564,32 @@
                         localStorage.setItem('popState', 'shown');
                     }
                 }, 15000);
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("#addProductForm").on("submit", function (event) {
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: "AddProductController",
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            alert(response.message);
+                            if (response.status === "success") {
+                                $("#addProductModal").modal("hide");
+                                location.reload();
+                            }
+                        },
+                        error: function () {
+                            alert("Error adding product.");
+                        }
+                    });
+                });
             });
         </script></body>
 

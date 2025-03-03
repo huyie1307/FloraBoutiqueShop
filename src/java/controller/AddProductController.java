@@ -6,119 +6,100 @@ import entity.Category;
 import entity.Product;
 import java.io.IOException;
 import java.io.File;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Servlet để thêm sản phẩm vào hệ thống.
- */
-
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5) // Giới hạn 5MB
 public class AddProductController extends HttpServlet {
 
     private final ProductDAO productDAO = new ProductDAO();
     private final CategoryDAO categoryDAO = new CategoryDAO();
 
-    /**
-     * Xử lý yêu cầu POST - Thêm sản phẩm mới.
-     */
-    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            ArrayList<Category> categories = categoryDAO.getAllCategories();
+            ArrayList<Product> products = productDAO.listAllProduct();
+            request.setAttribute("categories", categories);
+            request.setAttribute("products", products);
+        } catch (Exception e) {
+            Logger.getLogger(AddProductController.class.getName()).log(Level.SEVERE, "Lỗi khi lấy dữ liệu", e);
+            request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+        }
+        request.getRequestDispatcher("listProduct.jsp").forward(request, response);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
         try {
-            // Nhận dữ liệu từ request
-            String name = request.getParameter("name");
-            String title = request.getParameter("title");
-            String description = request.getParameter("description");
-            String categoryName = request.getParameter("categoryName"); // Lấy tên danh mục từ request
-            String priceStr = request.getParameter("price");
+            String name = request.getParameter("name").trim();
+            String title = request.getParameter("title").trim();
+            String description = request.getParameter("description").trim();
+            int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+            double price = Double.parseDouble(request.getParameter("price"));
+            int amount = Integer.parseInt(request.getParameter("amount"));
 
-            // Kiểm tra tham số hợp lệ
-            if (name == null || title == null || description == null || categoryName == null || priceStr == null) {
-                response.getWriter().write("{\"status\":\"error\", \"message\":\"Missing required parameters.\"}");
+            // Lấy tên danh mục theo ID
+            String categoryName = categoryDAO.getCategoryNameById(categoryId);
+            if (categoryName == null) {
+                request.setAttribute("errorMessage", "Danh mục không tồn tại!");
+                doGet(request, response);
                 return;
             }
 
-            // Chuyển đổi giá thành số
-            double price = Double.parseDouble(priceStr);
+            // Tạo đối tượng Category từ ID và tên
+            Category category = new Category();
+            category.setId(categoryId);
+            category.setName(categoryName);
 
-            // Lấy đối tượng Category từ categoryName
-              Category category = categoryDAO.getCategoryByName(categoryName);
-            if (category == null) {
-                // Phản hồi JSON khi danh mục không tồn tại
-                response.getWriter().write("{\"status\":\"error\", \"message\":\"Category not found.\"}");
-                return;
-            }
+            // Xử lý upload ảnh
+            String image = uploadImage(request.getPart("image"));
 
-            // Xử lý hình ảnh
-            String imageOption = request.getParameter("imageOption");
-            String image = "";
-
-            if ("upload".equals(imageOption)) {
-                Part imagePart = request.getPart("image");
-                String imageFileName = extractFileName(imagePart);
-
-                // Đảm bảo thư mục uploads tồn tại
-                String uploadPath = getServletContext().getRealPath("/uploads");
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                // Đường dẫn lưu ảnh
-                String filePath = uploadPath + File.separator + imageFileName;
-                imagePart.write(filePath);
-                image = "uploads/" + imageFileName; // Lưu đường dẫn tương đối
-            } else if ("url".equals(imageOption)) {
-                image = request.getParameter("imageUrl");
-            }
-
-            // Tạo đối tượng Product với Category
+            // Tạo đối tượng Product
             Product product = new Product();
             product.setName(name);
-            product.setImage(image);
-            product.setPrice(price);
             product.setTitle(title);
             product.setDescription(description);
+            product.setPrice(price);
+            product.setAmount(amount);
+            product.setImage(image);
             product.setCategory(category);
 
             // Thêm sản phẩm vào database
-            productDAO.addProduct(product);
-
-            // Phản hồi JSON thành công
-            response.getWriter().write("{\"status\":\"success\", \"message\":\"Product added successfully!\"}");
+            if (productDAO.addProduct(product, category.getId())) {
+                response.sendRedirect("listProduct");
+            } else {
+                request.setAttribute("errorMessage", "Thêm sản phẩm thất bại!");
+                doGet(request, response);
+            }
         } catch (NumberFormatException e) {
-            response.getWriter().write("{\"status\":\"error\", \"message\":\"Invalid number format.\"}");
+            request.setAttribute("errorMessage", "Dữ liệu nhập vào không hợp lệ!");
+            doGet(request, response);
         } catch (Exception e) {
             Logger.getLogger(AddProductController.class.getName()).log(Level.SEVERE, "Lỗi khi thêm sản phẩm", e);
-            response.getWriter().write("{\"status\":\"error\", \"message\":\"An error occurred.\"}");
+            request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            doGet(request, response);
         }
     }
 
-    /**
-     * Trích xuất tên file từ đối tượng Part (file upload).
-     */
-    private String extractFileName(Part part) {
-        String contentDisposition = part.getHeader("Content-Disposition");
-        for (String cd : contentDisposition.split(";")) {
-            if (cd.trim().startsWith("filename")) {
-                return cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
-            }
+    private String uploadImage(Part imagePart) throws IOException {
+        if (imagePart == null || imagePart.getSize() == 0) {
+            return "";
         }
-        return null;
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Servlet for adding products";
+        String fileName = new File(imagePart.getSubmittedFileName()).getName();
+        String uploadPath = getServletContext().getRealPath("/") + "uploads";
+        new File(uploadPath).mkdirs(); // Tạo thư mục nếu chưa có
+        imagePart.write(uploadPath + File.separator + fileName);
+        return "uploads/" + fileName;
     }
 }

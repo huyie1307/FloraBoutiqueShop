@@ -19,7 +19,7 @@ public class ProductDAO extends DBContext {
 
     public ArrayList<Product> listAllProduct() {
         ArrayList<Product> productList = new ArrayList<>();
-        String sql = "select p.pid,p.name,p.image,p.amount,p.price,p.title, p.description, c.cname from Product p\n"
+        String sql = "select p.pid,p.name,p.image,p.price,p.title, p.description, c.cname from Product p\n"
                 + "join Category c on c.cid = p.cateID";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -29,15 +29,14 @@ public class ProductDAO extends DBContext {
                 p.setId(rs.getInt("pid"));
                 p.setName(rs.getString("name"));
                 p.setImage(rs.getString("image"));
-                p.setAmount(rs.getInt("amount"));
                 p.setPrice(rs.getDouble("price"));
                 p.setTitle(rs.getString("title"));
                 p.setDescription(rs.getString("description"));
-                
+
                 Category c = new Category();
                 c.setName(rs.getString("cname"));
                 p.setCategory(c);
-                
+
                 productList.add(p);
             }
         } catch (SQLException ex) {
@@ -45,33 +44,29 @@ public class ProductDAO extends DBContext {
         }
         return productList;
     }
-    
-      public void addProduct(Product p) {
-        String sql = "INSERT INTO [dbo].[Product]\n"
-                + "           ([name]\n"
-                + "           ,[image]\n"
-                + "           ,[price]\n"
-                + "           ,[title]\n"
-                + "           ,[description]\n"
-                + "           ,[cateID])\n"
-                + "     VALUES\n"
-                + "           (?\n"
-                + "           ,?\n"
-                + "           ,?\n"
-                + "           ,?\n"
-                + "           ,?\n"
-                + "           ,?)";
+
+    public boolean addProduct(Product product, int cateID) {
+        String sql = "INSERT INTO [dbo].[Product] ([name], [image], [amount], [price], [title], [description], [cateID]) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, p.getName());
-            stm.setString(2, p.getImage());
-            stm.setDouble(3, p.getPrice());
-            stm.setString(4, p.getTitle());
-            stm.setString(5, p.getDescription());
-            stm.setInt(6, p.getCategory().getId());
-            stm.executeUpdate();
+            // Chuẩn bị câu lệnh SQL
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            // Set giá trị cho câu lệnh SQL
+            stmt.setString(1, product.getName()); // name
+            stmt.setString(2, product.getImage()); // image
+            stmt.setInt(3, product.getAmount()); // amount
+            stmt.setDouble(4, product.getPrice()); // price
+            stmt.setString(5, product.getTitle()); // title
+            stmt.setString(6, product.getDescription()); // description
+            stmt.setInt(7, cateID); // cateID
+
+            // Thực thi câu lệnh SQL và kiểm tra kết quả
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;  // Trả về true nếu có ít nhất 1 dòng được thêm
         } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "Lỗi khi thêm sản phẩm", ex);
+            return false;
         }
     }
 }
