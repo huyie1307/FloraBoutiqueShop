@@ -101,17 +101,23 @@ data += entry.getValue() + ",";
 
                 <script>
                     const revenueData = {
-                    <%= labels %>: [<%= data %>]
+                    <% 
+        if (revenueData != null) {
+            for (Map.Entry<String, Integer> entry : revenueData.entrySet()) { 
+                out.print("\"" + entry.getKey() + "\": " + entry.getValue() + ",");
+            }
+        } 
+                    %>
                     };
 
                     let ctx = document.getElementById('revenueChart').getContext('2d');
                     let revenueChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: Object.keys(revenueData),
+                            labels: [],
                             datasets: [{
                                     label: 'Doanh thu',
-                                    data: Object.values(revenueData),
+                                    data: [],
                                     backgroundColor: 'rgba(54, 162, 235, 0.6)',
                                     borderColor: 'rgba(54, 162, 235, 1)',
                                     borderWidth: 1
@@ -136,24 +142,49 @@ data += entry.getValue() + ",";
                         }
                     });
 
-                    function updateChart() {
-                        const filterType = document.getElementById('filterType').value;
-                        const filterDate = document.getElementById('filterDate').value;
-                        const filteredData = {};
-                        Object.entries(revenueData).forEach(([date, revenue]) => {
-                            const d = new Date(date);
-                            const filter = new Date(filterDate);
-                            if ((filterType === 'day' && d.toISOString().split('T')[0] === filterDate) ||
-                                    (filterType === 'month' && d.getMonth() === filter.getMonth() && d.getFullYear() === filter.getFullYear()) ||
-                                    (filterType === 'year' && d.getFullYear() === filter.getFullYear())) {
-                                filteredData[date] = revenue;
-                        }
-                        });
+                  function updateChart() {
+    const filterType = document.getElementById('filterType').value;
+    const filterDate = document.getElementById('filterDate').value;
 
-                        revenueChart.data.labels = Object.keys(filteredData);
-                        revenueChart.data.datasets[0].data = Object.values(filteredData);
-                        revenueChart.update();
-                    }
+    if (!filterDate) {
+        alert("Vui lòng chọn ngày để lọc dữ liệu!");
+        return;
+    }
+
+    const filteredData = {};
+    Object.entries(revenueData).forEach(([date, revenue]) => {
+        const d = new Date(date);
+        const filter = new Date(filterDate);
+
+        if ((filterType === 'day' && d.toISOString().split('T')[0] === filterDate) ||
+            (filterType === 'month' && d.getMonth() === filter.getMonth() && d.getFullYear() === filter.getFullYear()) ||
+            (filterType === 'year' && d.getFullYear() === filter.getFullYear())) {
+            filteredData[date] = revenue;
+        }
+    });
+
+    if (Object.keys(filteredData).length === 0) {
+        alert("Không có dữ liệu để hiển thị biểu đồ!");
+        return;
+    }
+
+    console.log("Filtered Data (Before Sort): ", filteredData);
+
+    // Sắp xếp các ngày tăng dần
+    const sortedData = Object.keys(filteredData)
+        .sort((a, b) => new Date(a) - new Date(b))
+        .reduce((acc, key) => {
+            acc[key] = filteredData[key];
+            return acc;
+        }, {});
+
+    console.log("Sorted Data: ", sortedData);
+
+    revenueChart.data.labels = Object.keys(sortedData);
+    revenueChart.data.datasets[0].data = Object.values(sortedData);
+    revenueChart.update();
+}
+
                 </script>
             </div>
         </div>
