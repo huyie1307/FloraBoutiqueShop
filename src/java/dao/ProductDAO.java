@@ -69,4 +69,57 @@ public class ProductDAO extends DBContext {
             return false;
         }
     }
+
+    public boolean updateProduct(Product product) {
+        String sql = "UPDATE Product SET name = ?,"
+                + " image = ?, amount = ?, "
+                + "price = ?, title = ?, description = ?, cateID = ? "
+                + "WHERE pid = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, product.getName());
+            stmt.setString(2, product.getImage());
+            stmt.setInt(3, product.getAmount());
+            stmt.setDouble(4, product.getPrice());
+            stmt.setString(5, product.getTitle());
+            stmt.setString(6, product.getDescription());
+            stmt.setInt(7, product.getCategory().getId());
+            stmt.setInt(8, product.getId());
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;  // Trả về true nếu có ít nhất một bản ghi được cập nhật
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;  // Trả về false nếu có lỗi xảy ra
+    }
+    // Lấy thông tin sản phẩm theo ID
+
+    public Product getProductById(int id) {
+        String sql = "SELECT p.pid, p.name, p.image, p.price, p.title, p.description, c.cname "
+                + "FROM Product p "
+                + "JOIN Category c ON c.cid = p.cateID "
+                + "WHERE p.pid = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("pid"));
+                product.setName(rs.getString("name"));
+                product.setImage(rs.getString("image"));
+                product.setPrice(rs.getDouble("price"));
+                product.setTitle(rs.getString("title"));
+                product.setDescription(rs.getString("description"));
+
+                Category category = new Category();
+                category.setName(rs.getString("cname"));
+                product.setCategory(category);
+
+                return product;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

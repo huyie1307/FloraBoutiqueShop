@@ -421,6 +421,8 @@
                                         </div>
 
                                         <!-- Bảng dữ liệu sản phẩm -->
+
+                                        <!-- Bảng dữ liệu sản phẩm -->
                                         <table id="datatables-buttons" class="table table-striped" style="width:100%">
                                             <thead>
                                                 <tr>
@@ -431,10 +433,10 @@
                                                     <th>Title</th>
                                                     <th>Description</th>
                                                     <th>Category</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- Hiển thị danh sách sản phẩm -->
                                                 <c:forEach items="${product}" var="p">
                                                     <tr>
                                                         <td>${p.id}</td>
@@ -446,6 +448,9 @@
                                                         <td>${p.title}</td>
                                                         <td>${p.description}</td>
                                                         <td>${p.category.name}</td>
+                                                        <td>
+                                                            <a href="updateProduct?id=${p.id}" class="btn btn-warning">Edit</a>
+                                                        </td>
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
@@ -591,6 +596,31 @@
                     });
                 });
             });
-        </script></body>
+        </script>
+
+        <script>
+            document.querySelectorAll('button[data-bs-toggle="modal"]').forEach(button => {
+                button.addEventListener('click', function () {
+                    document.getElementById('productId').value = this.getAttribute('data-id');
+                    document.getElementById('productName').value = this.getAttribute('data-name');
+                    document.getElementById('productTitle').value = this.getAttribute('data-title');
+                    document.getElementById('productDescription').value = this.getAttribute('data-description');
+                    document.getElementById('productPrice').value = this.getAttribute('data-price');
+                    document.getElementById('productAmount').value = this.getAttribute('data-amount');
+                    document.getElementById('productCategory').value = this.getAttribute('data-category');
+
+                    let imagePath = this.getAttribute('data-image');
+                    if (imagePath && imagePath.trim() !== '') {
+                        document.getElementById('existingImage').value = imagePath;
+                        document.getElementById('productImagePreview').src = imagePath;
+                        document.getElementById('productImagePreview').style.display = 'block';
+                    } else {
+                        document.getElementById('productImagePreview').style.display = 'none';
+                    }
+                });
+            });
+        </script>
+
+    </body>
 
 </html>
