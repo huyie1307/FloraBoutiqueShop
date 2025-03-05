@@ -24,6 +24,14 @@
         <servlet-name>UpdateProductController</servlet-name>
         <servlet-class>controller.UpdateProductController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RevenueController</servlet-name>
+        <servlet-class>controller.RevenueController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminController</servlet-name>
+        <servlet-class>controller.AdminController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -47,5 +55,13 @@
     <servlet-mapping>
         <servlet-name>UpdateProductController</servlet-name>
         <url-pattern>/updateProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RevenueController</servlet-name>
+        <url-pattern>/rev</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminController</servlet-name>
+        <url-pattern>/AdminController</url-pattern>
     </servlet-mapping>
 </web-app>

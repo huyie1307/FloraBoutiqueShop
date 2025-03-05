@@ -80,7 +80,7 @@ data += entry.getValue() + ",";
                 <jsp:include page="Admin.jsp"/>
             </div>
             <div class="content">
-                <h1>Quản lý Doanh Thu</h1>
+                <h1>Revenue Management</h1>
                 <h2>Tổng doanh thu: <%= totalRevenue %> VND</h2>
 
                 <div>
@@ -152,14 +152,33 @@ data += entry.getValue() + ",";
     }
 
     const filteredData = {};
+
     Object.entries(revenueData).forEach(([date, revenue]) => {
         const d = new Date(date);
         const filter = new Date(filterDate);
 
-        if ((filterType === 'day' && d.toISOString().split('T')[0] === filterDate) ||
-            (filterType === 'month' && d.getMonth() === filter.getMonth() && d.getFullYear() === filter.getFullYear()) ||
-            (filterType === 'year' && d.getFullYear() === filter.getFullYear())) {
+        if (isNaN(d.getTime())) {
+            console.warn("Ngày không hợp lệ:", date);
+            return;
+        }
+
+        if (filterType === 'day' && d.toISOString().split('T')[0] === filterDate) {
             filteredData[date] = revenue;
+        } 
+        else if (filterType === 'month' && d.getMonth() === filter.getMonth() && d.getFullYear() === filter.getFullYear()) {
+             const dayKey = `${d.getDate()}`;
+            filteredData[dayKey] = revenue;
+        } 
+        else if (filterType === 'year' && d.getFullYear() === filter.getFullYear()) {
+            // Nhóm doanh thu theo tháng thay vì ngày
+            const monthKey = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2);
+
+            
+            if (!filteredData[monthKey]) {
+                filteredData[monthKey] = 0;
+            }
+            
+            filteredData[monthKey] += revenue; // Cộng dồn doanh thu vào từng tháng
         }
     });
 
@@ -168,11 +187,9 @@ data += entry.getValue() + ",";
         return;
     }
 
-    console.log("Filtered Data (Before Sort): ", filteredData);
-
-    // Sắp xếp các ngày tăng dần
+    // Sắp xếp các tháng tăng dần
     const sortedData = Object.keys(filteredData)
-        .sort((a, b) => new Date(a) - new Date(b))
+        .sort((a, b) => new Date(a + '-01') - new Date(b + '-01'))
         .reduce((acc, key) => {
             acc[key] = filteredData[key];
             return acc;
@@ -184,6 +201,7 @@ data += entry.getValue() + ",";
     revenueChart.data.datasets[0].data = Object.values(sortedData);
     revenueChart.update();
 }
+
 
                 </script>
             </div>
