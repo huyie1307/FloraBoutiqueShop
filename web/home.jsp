@@ -1,3 +1,6 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,17 +17,26 @@
         <header>
             <a href="index.html" class="logo"><img src="image/logo.png" alt="" width="100"></a>
             <div class="navbar">
-                <a href="#home">home</a>
+                <a href="home">home</a>
                 <a href="#services">services</a>
                 <a href="#about">about</a>
                 <a href="#shop">shop</a>
-                <a href="myProduct.jsp">My Products</a>
+                <a href="listProduct">My Products</a>
                 <a href="flowerz">Test</a>
                 <a href="#contact">contact</a>
                 <a href="#blog">blog</a>
-                <a href="Login.jsp">login</a>
-                <a href="signup.jsp">sign up</a>
-                <a href="myOrder.jsp">My Order</a>
+                <c:choose>
+                    <c:when test="${not empty sessionScope.user}">
+                        <a href="listorder">My Order</a>
+                        <a href="#">Hello, ${sessionScope.user.name}</a>
+                        <a href="logout">Logout</a>
+                    </c:when>
+
+                    <c:otherwise>
+                        <a href="login">login</a>
+                        <a href="signin">Sign up</a>
+                    </c:otherwise>
+                </c:choose>          
             </div>
             <div class="icon">
                 <i class="fab fa-facebook"></i>
@@ -361,10 +373,6 @@
                 <p>copyright @ 2023 <span>code with selena.</span>All Rights Reserved</p>
             </div>
         </footer>
-
-
-
-
 
         <script src="script.js"></script>
     </body>

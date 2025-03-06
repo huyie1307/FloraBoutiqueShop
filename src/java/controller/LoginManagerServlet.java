@@ -1,7 +1,5 @@
 package controller;
 
-
-
 import dao.LoginDAO;
 import dao.*;
 import entity.*;
@@ -35,22 +33,19 @@ public class LoginManagerServlet extends HttpServlet {
         }
 
         LoginDAO loginDAO = new LoginDAO();
-        Account account = loginDAO.login(username, password);
+        User user = loginDAO.login(username, password);
 
-        if (account == null) {
+        if (user == null) {
             request.setAttribute("message", "Thông tin đăng nhập không hợp lệ. Vui lòng thử lại.");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
         } else {
             HttpSession session = request.getSession();
-            User user = loginDAO.getUserLogin(username);
             session.setAttribute("user", user);
-            session.setAttribute("account", account);
             session.setMaxInactiveInterval(1800); // Session 30 phút
-            
-            System.out.println(user);
-            System.out.println(account);
 
-            response.sendRedirect("index.html"); // Redirect thay vì forward
+            System.out.println(user);
+
+            response.sendRedirect("home"); // Redirect thay vì forward
         }
     }
 }

@@ -1,21 +1,46 @@
 package entity;
 
 public class Product {
-    private int id;
+
+    private int flowerId;
     private String name;
-    private String image;
-    private int amount;
+    private String category;
+    private int quantity;
     private double price;
+    private String imageUrl;
     private String title;
     private String description;
-    private Category category;
 
-    public int getId() {
-        return id;
+    public Product() {
+
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Product(int flowerId, String name, String category, int quantity, double price, String imageUrl) {
+        this.flowerId = flowerId;
+        this.name = name;
+        this.category = category;
+        this.quantity = quantity;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+
+    public Product(int flowerId, String name, String category, int quantity, double price, String imageUrl, String title, String description) {
+        this.flowerId = flowerId;
+        this.name = name;
+        this.category = category;
+        this.quantity = quantity;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.description = description;
+    }
+
+    public int getFlowerId() {
+        return flowerId;
+    }
+
+    public void setFlowerId(int flowerId) {
+        this.flowerId = flowerId;
     }
 
     public String getName() {
@@ -26,20 +51,20 @@ public class Product {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
+    public String getCategory() {
+        return category;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public double getPrice() {
@@ -48,6 +73,14 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
@@ -66,13 +99,9 @@ public class Product {
         this.description = description;
     }
 
-    public Category getCategory() {
-        return category;
+    @Override
+    public String toString() {
+        return "Product{" + "flowerId=" + flowerId + ", name=" + name + ", category=" + category + ", quantity=" + quantity + ", price=" + price + ", imageUrl=" + imageUrl + ", title=" + title + ", description=" + description + '}';
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    
 }

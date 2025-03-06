@@ -1,5 +1,7 @@
 package controller;
 
+import dao.CartDAO;
+import entity.Cart;
 import entity.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -7,38 +9,35 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
-public class Admin extends HttpServlet {
+public class ListOrderServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        // Lấy session hiện tại, nếu không có thì chuyển hướng đến trang đăng nhập
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect("login");
             return;
         }
-
-        // Lấy đối tượng Account từ session
         User user = (User) session.getAttribute("user");
 
-        // Kiểm tra quyền admin
-        if (!user.isIsAdmin()) {
-            // Nếu không phải admin, chuyển hướng đến trang báo lỗi hoặc trang không có quyền
-            response.sendRedirect("404.jsp");
-            return;
-        }
+        CartDAO cartDAO = new CartDAO();
+        List<Cart> carts = cartDAO.getListCartByUserId(user.getuID());
 
-        // Nếu đủ quyền, chuyển tiếp đến trang Admin.jsp
-        request.getRequestDispatcher("Admin.jsp").forward(request, response);
+        request.setAttribute("carts", carts);
+        request.getRequestDispatcher("myOrder.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+
+        request.getRequestDispatcher("myOrder.jsp").forward(request, response);
     }
+
 }

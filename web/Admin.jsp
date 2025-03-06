@@ -93,7 +93,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">Flower Shop Admin</div>
-        <a href="index.html">Home</a>
+        <a href="home">Home</a>
         <a href="?section=orders">Orders</a>
         <a href="?section=customers">Customers</a>
         <a href="?section=feedbacks">Feedbacks</a>

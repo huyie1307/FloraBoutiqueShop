@@ -8,6 +8,7 @@ import dal.DBContext;
 import java.util.ArrayList;
 import entity.*;
 import java.sql.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,18 +27,15 @@ public class ProductDAO extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
-                p.setId(rs.getInt("pid"));
+                p.setFlowerId(rs.getInt("pid"));
                 p.setName(rs.getString("name"));
-                p.setImage(rs.getString("image"));
-                p.setAmount(rs.getInt("amount"));
+                p.setImageUrl(rs.getString("image"));
+                p.setQuantity(rs.getInt("amount"));
                 p.setPrice(rs.getDouble("price"));
                 p.setTitle(rs.getString("title"));
                 p.setDescription(rs.getString("description"));
-                
-                Category c = new Category();
-                c.setName(rs.getString("cname"));
-                p.setCategory(c);
-                
+                p.setCategory(rs.getString("cname"));
+
                 productList.add(p);
             }
         } catch (SQLException ex) {
@@ -45,12 +43,12 @@ public class ProductDAO extends DBContext {
         }
         return productList;
     }
-    
-    public void addProduct(String name, String image, int amount, double price, 
-                           String title, String description, String categoryName) {
+
+    public void addProduct(String name, String image, int amount, double price,
+            String title, String description, String categoryName) {
         String insertProductSQL = "INSERT INTO [dbo].[Product] "
-                                + "([name], [image], [amount], [price], [title], [description], [cateID], [sell_ID]) "
-                                + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
+                + "([name], [image], [amount], [price], [title], [description], [cateID], [sell_ID]) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
 
         String getCategorySQL = "SELECT cid FROM [dbo].[Category] WHERE cname = ?";
 
@@ -85,5 +83,5 @@ public class ProductDAO extends DBContext {
             ex.printStackTrace();
             throw new RuntimeException("Error adding product: " + ex.getMessage());
         }
-    } 
+    }
 }

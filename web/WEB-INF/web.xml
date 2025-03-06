@@ -9,14 +9,52 @@
         <servlet-class>controller.Signin</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>OrderDAO</servlet-name>
+        <servlet-class>dao.OrderDAO</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>View</servlet-name>
+        <servlet-class>controller.View</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>controller.HomeServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Admin</servlet-name>
         <servlet-class>controller.Admin</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ListProductController</servlet-name>
         <servlet-class>controller.ListProductController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddProductController</servlet-name>
         <servlet-class>controller.AddProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListOrderServlet</servlet-name>
+        <servlet-class>controller.ListOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCartServlet</servlet-name>
+        <servlet-class>controller.DeleteCartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <servlet-class>controller.AddToCartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCartQuantityServlet</servlet-name>
+        <servlet-class>controller.UpdateCartQuantityServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>controller.Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <servlet-class>controller.CheckoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -27,13 +65,47 @@
         <url-pattern>/signin</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>View</servlet-name>
+        <url-pattern>/flowerz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>Admin</servlet-name>
         <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ListProductController</servlet-name>
         <url-pattern>/listProduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddProductController</servlet-name>
         <url-pattern>/addProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListOrderServlet</servlet-name>
+        <url-pattern>/listorder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCartServlet</servlet-name>
+        <url-pattern>/deletecart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <url-pattern>/addToCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCartQuantityServlet</servlet-name>
+        <url-pattern>/updateCartQuantity</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
 </web-app>
