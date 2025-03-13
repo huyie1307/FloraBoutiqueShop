@@ -34,7 +34,7 @@ public class AdminController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdminController</title>");            
+            out.println("<title>Servlet AdminController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet AdminController at " + request.getContextPath() + "</h1>");
@@ -56,8 +56,10 @@ public class AdminController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        if (action == null) action = "dashboard";
-     
+        if (action == null) {
+            action = "dashboard";
+        }
+
         String page = "Dashboard.jsp"; // Mặc định hiển thị Dashboard
 
         switch (action) {
@@ -65,13 +67,16 @@ public class AdminController extends HttpServlet {
                 page = "order"; // Chỉ forward nội dung, không load toàn trang
                 break;
             case "revenue":
-                 page = "rev";
+                page = "rev";
                 break;
             case "cus":
                 page = "user";
                 break;
+            case "products":
+                page = "listProduct"; // Trang quản lý sản phẩm
+                break;
         }
-    
+
         response.sendRedirect(page);
     }
 

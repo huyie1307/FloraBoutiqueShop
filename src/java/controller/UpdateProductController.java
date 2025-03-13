@@ -52,7 +52,6 @@ public class UpdateProductController extends HttpServlet {
             String title = request.getParameter("title").trim();
             String description = request.getParameter("description").trim();
             double price = Double.parseDouble(request.getParameter("price"));
-            int amount = Integer.parseInt(request.getParameter("amount"));
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
 
             Part imagePart = request.getPart("image");
@@ -68,7 +67,6 @@ public class UpdateProductController extends HttpServlet {
             product.setTitle(title);
             product.setDescription(description);
             product.setPrice(price);
-            product.setAmount(amount);
             product.setImage(image);
 
             Category category = new Category();

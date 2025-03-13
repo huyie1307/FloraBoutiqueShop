@@ -15,31 +15,33 @@
 
         <form action="addProduct" method="post" enctype="multipart/form-data">
             <label for="name">Tên sản phẩm:</label>
-            <input type="text" name="name" required><br>
+            <input type="text" name="name" required /><br>
 
             <label for="title">Tiêu đề:</label>
-            <input type="text" name="title" required><br>
+            <input type="text" name="title" required /><br>
 
             <label for="description">Mô tả:</label>
-            <textarea name="description" required></textarea><br>
+            <textarea name="description"></textarea><br>
 
             <label for="categoryId">Danh mục:</label>
-            <select name="categoryId" required>
+            <select name="categoryId">
                 <c:forEach var="category" items="${categories}">
                     <option value="${category.id}">${category.name}</option>
                 </c:forEach>
             </select><br>
 
             <label for="price">Giá:</label>
-            <input type="number" name="price" step="0.01" required><br>
+            <input type="number" name="price" required /><br>
 
-            <label for="amount">Số lượng:</label>
-            <input type="number" name="amount" required><br>
+            <label for="image">Hình ảnh:</label>
+            <input type="file" name="image" /><br>
 
-            <label for="image">Ảnh sản phẩm:</label>
-            <input type="file" name="image" accept="image/*"><br>
-
-            <button type="submit">Thêm Sản Phẩm</button>
+            <input type="submit" value="Thêm sản phẩm" />
         </form>
+
+        <c:if test="${not empty errorMessage}">
+            <p style="color:red">${errorMessage}</p>
+        </c:if>
+
     </body>
 </html>

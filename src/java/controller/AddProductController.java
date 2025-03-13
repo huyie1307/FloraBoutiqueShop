@@ -35,7 +35,7 @@ public class AddProductController extends HttpServlet {
             Logger.getLogger(AddProductController.class.getName()).log(Level.SEVERE, "Lỗi khi lấy dữ liệu", e);
             request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
         }
-        request.getRequestDispatcher("listProduct.jsp").forward(request, response);
+        request.getRequestDispatcher("product.jsp").forward(request, response);
     }
 
     @Override
@@ -47,7 +47,6 @@ public class AddProductController extends HttpServlet {
             String description = request.getParameter("description").trim();
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
             double price = Double.parseDouble(request.getParameter("price"));
-            int amount = Integer.parseInt(request.getParameter("amount"));
 
             // Lấy tên danh mục theo ID
             String categoryName = categoryDAO.getCategoryNameById(categoryId);
@@ -71,7 +70,6 @@ public class AddProductController extends HttpServlet {
             product.setTitle(title);
             product.setDescription(description);
             product.setPrice(price);
-            product.setAmount(amount);
             product.setImage(image);
             product.setCategory(category);
 

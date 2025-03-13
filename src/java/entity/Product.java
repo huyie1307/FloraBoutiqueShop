@@ -4,19 +4,12 @@ public class Product {
     private int id;
     private String name;
     private String image;
-    private int amount;
+
     private double price;
     private String title;
     private String description;
     private Category category;
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
 
     public int getId() {
         return id;

@@ -32,9 +32,6 @@
         <label for="price">Giá:</label>
         <input type="number" id="price" name="price" value="${product.price}" step="0.01" required><br>
 
-        <label for="amount">Số lượng:</label>
-        <input type="number" id="amount" name="amount" value="${product.amount}" required><br>
-
         <label for="categoryId">Danh mục:</label>
         <select id="categoryId" name="categoryId" required>
             <c:forEach var="category" items="${categories}">
