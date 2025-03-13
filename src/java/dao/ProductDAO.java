@@ -91,6 +91,26 @@ public class ProductDAO extends DBContext {
         return false;  // Trả về false nếu có lỗi xảy ra
     }
 
+    public boolean deleteProduct(int productId) throws SQLException {
+        String sql = "DELETE FROM [dbo].[Product] WHERE pid = ?";
+
+        // Khai báo PreparedStatement để thực thi câu lệnh SQL
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            // Thiết lập giá trị cho tham số pid
+            stmt.setInt(1, productId);
+
+            // Thực thi câu lệnh SQL
+            int rowsAffected = stmt.executeUpdate();
+
+            // Nếu có ít nhất một dòng bị xóa, trả về true
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            // In lỗi nếu có ngoại lệ xảy ra
+            e.printStackTrace();
+            throw new SQLException("Lỗi khi xóa sản phẩm");
+        }
+    }
+
     // Lấy thông tin sản phẩm theo ID
     public Product getProductById(int id) {
         String sql = "SELECT p.pid, p.name, p.image, p.price, p.title, p.description, c.cname "

@@ -98,6 +98,7 @@
                                                         <td>${p.category.name}</td>
                                                         <td>
                                                             <a href="updateProduct?id=${p.id}" class="btn btn-warning">Edit</a>
+                                                            <a href="deleteProduct?id=${p.id}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
