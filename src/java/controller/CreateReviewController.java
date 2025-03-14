@@ -21,12 +21,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import entity.Review;
 import jakarta.servlet.http.HttpSession;
+
 /**
  *
  * @author daoducdanh
  */
 @WebServlet(name = "CreateReviewController", urlPatterns = {"/create-review"})
 public class CreateReviewController extends HttpServlet {
+
     private ReviewDAO reviewDAO = new ReviewDAO();
     private OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
 
@@ -42,7 +44,7 @@ public class CreateReviewController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,21 +74,23 @@ public class CreateReviewController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
+
         int rating = Integer.parseInt(request.getParameter("rating"));
         String content = request.getParameter("content");
         int productId = Integer.parseInt(request.getParameter("productId"));
+        Product product = new Product();
+        product.setId(productId);
         int orderDetailId = Integer.parseInt(request.getParameter("orderDetailId"));
-        
+
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute("account");
-        Review review = new Review(rating, content, account, new Product(productId));
+        Review review = new Review(rating, content, account, product);
         int reviewId = reviewDAO.insertReview(review);
-        
+
         orderDetailDAO.updateReviewIdInOrderDetail(orderDetailId, reviewId);
-        
+
         response.sendRedirect("/WebApplication1/my-order");
-        
+
     }
 
     /**

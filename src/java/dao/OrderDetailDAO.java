@@ -48,14 +48,13 @@ public class OrderDetailDAO extends DBContext {
                 orderDetail.setPriceChange(rs.getDouble("priceChange"));
 
                 Order order = new Order();
-                order.setId(rs.getString("orderID"));
-                order.setTotalPrice(rs.getDouble("totalPrice"));
+                order.setOrderID(rs.getInt("orderID"));
+                order.setTotalPrice(rs.getBigDecimal("totalPrice"));
                 order.setNote(rs.getString("note"));
 
                 OrderStatus orderStatus = new OrderStatus();
                 orderStatus.setId(rs.getInt("statusID"));
                 orderStatus.setStatusName(rs.getString("statusName"));
-                order.setStatus(orderStatus);
 
                 orderDetail.setOrder(order);
 
