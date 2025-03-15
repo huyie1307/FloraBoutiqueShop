@@ -9,7 +9,6 @@ package controller;
  * @author admin
  */
 import dao.OrderDAO;
-import entity.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -56,9 +55,9 @@ public class MyOrderController extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
+        User user = (User) session.getAttribute("user");
         
-        if(account == null){
+        if(user == null){
             response.sendRedirect("/WebApplication1/login");
             return;
         }
@@ -67,8 +66,8 @@ public class MyOrderController extends HttpServlet {
         int currentPage = pageParam != null ? Integer.parseInt(pageParam) : 1;
         int limit = 4;
         
-        List<Order> orders = orderDAO.getOrdersByAccountId(account.getId(), currentPage, limit);
-        long totalproducts = orderDAO.getOrderCountByAccountId(account.getId());
+        List<Order> orders = orderDAO.getOrdersByAccountId(user.getuID(), currentPage, limit);
+        long totalproducts = orderDAO.getOrderCountByAccountId(user.getuID());
         int totalPages = (int) Math.ceil((double) totalproducts / limit);
         
         request.setAttribute("orders", orders);

@@ -11,34 +11,6 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/entity/Product.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/dal/DBContext.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/web/product.jsp</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/controller/AddProductController.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/dao/CategoryDAO.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/controller/Admin.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/controller/Signin.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/web/signup.jsp</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/web/Admin.jsp</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/controller/LoginManagerServlet.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/dao/ProductDAO.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/web/updateProduct.jsp</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/web/myOrder.jsp</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/dao/LoginDAO.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/web/addProduct.jsp</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/controller/CreateReviewController.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/dao/OrderDAO.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/entity/Order.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/web/META-INF/context.xml</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/controller/AdminController.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/web/WEB-INF/web.xml</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/controller/ListProductController.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/entity/Category.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/controller/UpdateProductController.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/src/java/dao/OrderDetailDAO.java</file>
-            <file>file:/D:/New%20folder/FloraBoutiqueShop/web/Login.jsp</file>
-            <file>file:/C:/Users/ADMIN/Desktop/SE%20SPRING%202025/SWP391/1_SWP391/SWP391_Assignment/FloraBoutiqueShop/src/java/controller/CheckoutServlet.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

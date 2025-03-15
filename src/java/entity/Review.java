@@ -18,6 +18,13 @@ public class Review {
         this.user = user;
         this.product = product;
     }
+    
+    public Review(int rating, String content, User user, Product product) {
+        this.rating = rating;
+        this.content = content;
+        this.user = user;
+        this.product = product;
+    }
 
     public int getId() {
         return id;

@@ -70,11 +70,12 @@ public class AddProductController extends HttpServlet {
             product.setTitle(title);
             product.setDescription(description);
             product.setPrice(price);
-            product.setImage(image);
-            product.setCategory(category);
-
+            product.setImageUrl(image);
+            product.setCategory(categoryDAO.getCategoryNameById(categoryId));
+            
             // Thêm sản phẩm vào database
-            if (productDAO.addProduct(product, category.getId())) {
+            if (productDAO.addProduct(product.getName(), product.getImageUrl(), product
+                    .getQuantity(), product.getPrice(), product.getTitle(), product.getDescription(), categoryName)) {
                 response.sendRedirect("listProduct");
             } else {
                 request.setAttribute("errorMessage", "Thêm sản phẩm thất bại!");

@@ -3,7 +3,10 @@ package dao;
 import dal.DBContext;
 import entity.Order;
 import entity.OrderDetail;
+import entity.PaymentMethod;
 import entity.Product;
+import entity.Status;
+import entity.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -177,22 +180,70 @@ public class OrderDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
-    
-    public int getOrderCountByAccountId(int accountId) {
-        String sql = "SELECT COUNT(*) AS total FROM [Order] WHERE accountID = ?";
-        int count = 0;
-        
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, accountId);
-            ResultSet rs = stmt.executeQuery();
-            
-            if (rs.next()) {
-                count = rs.getInt("total");
+
+    public List<Order> getOrdersByAccountId(int accountId, int currentPage, int limit) {
+        List<Order> orders = new ArrayList<>();
+        String query = "SELECT o.orderID, o.userID, o.statusID, o.totalPrice, o.orderDate, o.paymentMethodID, "
+                + "s.statusName, pm.methodName, u.username "
+                + "FROM [Order] o "
+                + "JOIN [Status] s ON o.statusID = s.statusID "
+                + "JOIN [PaymentMethod] pm ON o.paymentMethodID = pm.methodID "
+                + "JOIN [User] u ON o.userID = u.userID "
+                + "WHERE o.userID = ? "
+                + "ORDER BY o.orderDate DESC "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        int offset = (currentPage - 1) * limit;
+
+        try (Connection conn = this.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, accountId);
+            ps.setInt(2, offset);
+            ps.setInt(3, limit);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getString("orderID"));
+                order.setUser(new User(rs.getInt("userID"), rs.getString("username")));
+                order.setStatus(new Status(rs.getInt("statusID"), rs.getString("statusName")));
+                order.setTotal(rs.getDouble("totalPrice"));
+                order.setOrderDate(rs.getTimestamp("orderDate"));
+                order.setMethod(new PaymentMethod(rs.getInt("paymentMethodID"), rs.getString("methodName")));
+                orders.add(order);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count;
+
+        return orders;
     }
+
+    public long getOrderCountByAccountId(int accountId) {
+        String query = "SELECT COUNT(*) AS total FROM [Order] WHERE userID = ?";
+        long total = 0;
+
+        try (Connection conn = this.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, accountId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getLong("total");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return total;
+    }
+
 }

@@ -20,7 +20,7 @@ public class ProductDAO extends DBContext {
 
     public ArrayList<Product> listAllProduct() {
         ArrayList<Product> productList = new ArrayList<>();
-        String sql = "select p.pid,p.name,p.image,p.price,p.title, p.description, c.cname from Product p\n"
+        String sql = "select p.pid,p.name,p.image,p.amount,p.price,p.title, p.description, c.cname from Product p\n"
                 + "join Category c on c.cid = p.cateID";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -35,6 +35,7 @@ public class ProductDAO extends DBContext {
                 p.setTitle(rs.getString("title"));
                 p.setDescription(rs.getString("description"));
                 p.setCategory(rs.getString("cname"));
+
                 productList.add(p);
             }
         } catch (SQLException ex) {
@@ -43,99 +44,121 @@ public class ProductDAO extends DBContext {
         return productList;
     }
 
-    public boolean addProduct(Product product, int cateID) {
-        String sql = "INSERT INTO [dbo].[Product] ([name], [image], [price], [title], [description], [cateID]) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+    public boolean addProduct(String name, String image, int amount, double price,
+            String title, String description, String categoryName) {
+        String insertProductSQL = "INSERT INTO [dbo].[Product] "
+                + "([name], [image], [amount], [price], [title], [description], [cateID], [sell_ID]) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
+
+        String getCategorySQL = "SELECT cid FROM [dbo].[Category] WHERE cname = ?";
+
         try {
-            // Chuẩn bị câu lệnh SQL
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            // Lấy cateID dựa trên tên danh mục
+            PreparedStatement stmtCategory = connection.prepareStatement(getCategorySQL);
+            stmtCategory.setString(1, categoryName);
+            ResultSet rsCategory = stmtCategory.executeQuery();
 
-            // Set giá trị cho câu lệnh SQL
-            stmt.setString(1, product.getName()); // name
-            stmt.setString(2, product.getImage()); // image
-            stmt.setDouble(3, product.getPrice()); // price
-            stmt.setString(4, product.getTitle()); // title
-            stmt.setString(5, product.getDescription()); // description
-            stmt.setInt(6, cateID); // cateID
+            if (rsCategory.next()) {
+                int cateID = rsCategory.getInt("cid");
 
-            // Thực thi câu lệnh SQL và kiểm tra kết quả
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;  // Trả về true nếu có ít nhất 1 dòng được thêm
+                // Thêm sản phẩm vào bảng Product
+                PreparedStatement stmtProduct = connection.prepareStatement(insertProductSQL);
+                stmtProduct.setString(1, name);
+                stmtProduct.setString(2, image);
+                stmtProduct.setInt(3, amount);
+                stmtProduct.setDouble(4, price);
+                stmtProduct.setString(5, title);
+                stmtProduct.setString(6, description);
+                stmtProduct.setInt(7, cateID);
+
+                // Thực thi câu lệnh INSERT
+                stmtProduct.executeUpdate();
+                return true;
+            } else {
+                // Nếu không tìm thấy category, ném ngoại lệ
+                throw new SQLException("Category not found: " + categoryName);
+            }
+
         } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "Lỗi khi thêm sản phẩm", ex);
+            // Log lỗi hoặc ném ngoại lệ ra ngoài (hoặc có thể thông báo cho người dùng)
+            ex.printStackTrace();
             return false;
         }
     }
 
-    public boolean updateProduct(Product product) {
-        String sql = "UPDATE Product SET name = ?,"
-                + " image = ?, price = ?, "
-                + "title = ?, description = ?, cateID = ? "
-                + "WHERE pid = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, product.getName());
-            stmt.setString(2, product.getImage());
-            stmt.setDouble(3, product.getPrice());
-            stmt.setString(4, product.getTitle());
-            stmt.setString(5, product.getDescription());
-            stmt.setInt(6, product.getCategory().getId());
-            stmt.setInt(7, product.getId());
-
-            int rowsUpdated = stmt.executeUpdate();
-            return rowsUpdated > 0;  // Trả về true nếu có ít nhất một bản ghi được cập nhật
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;  // Trả về false nếu có lỗi xảy ra
-    }
-
-    public boolean deleteProduct(int productId) throws SQLException {
-        String sql = "DELETE FROM [dbo].[Product] WHERE pid = ?";
-
-        // Khai báo PreparedStatement để thực thi câu lệnh SQL
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            // Thiết lập giá trị cho tham số pid
+    public boolean deleteProduct(int productId) {
+        String deleteSQL = "DELETE FROM [Product] WHERE pid = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(deleteSQL);
             stmt.setInt(1, productId);
-
-            // Thực thi câu lệnh SQL
             int rowsAffected = stmt.executeUpdate();
-
-            // Nếu có ít nhất một dòng bị xóa, trả về true
             return rowsAffected > 0;
-        } catch (SQLException e) {
-            // In lỗi nếu có ngoại lệ xảy ra
-            e.printStackTrace();
-            throw new SQLException("Lỗi khi xóa sản phẩm");
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
 
-    // Lấy thông tin sản phẩm theo ID
     public Product getProductById(int id) {
-        String sql = "SELECT p.pid, p.name, p.image, p.price, p.title, p.description, c.cname "
-                + "FROM Product p "
-                + "JOIN Category c ON c.cid = p.cateID "
-                + "WHERE p.pid = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
+        Product product = null;
+        String sql = "SELECT p.pid, p.name, p.image, p.amount, p.price, p.title, p.description, c.cname " +
+                "FROM Product p " +
+                "JOIN Category c ON c.cid = p.cateID " +
+                "WHERE p.pid = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
             if (rs.next()) {
-                Product product = new Product();
-                product.setId(rs.getInt("pid"));
+                product = new Product();
+                product.setFlowerId(rs.getInt("pid"));
                 product.setName(rs.getString("name"));
-                product.setImage(rs.getString("image"));
+                product.setImageUrl(rs.getString("image"));
+                product.setQuantity(rs.getInt("amount"));
                 product.setPrice(rs.getDouble("price"));
                 product.setTitle(rs.getString("title"));
                 product.setDescription(rs.getString("description"));
-
-                Category category = new Category();
-                category.setName(rs.getString("cname"));
-                product.setCategory(category);
-
-                return product;
+                product.setCategory(rs.getString("cname"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return product;
     }
+
+    public boolean updateProduct(Product product) {
+        String sql = "UPDATE Product SET name = ?, image = ?, amount = ?, price = ?, title = ?, description = ?, cateID = ? " +
+                "WHERE pid = ?";
+        try {
+            // Retrieve the category ID based on the category name
+            String getCategorySQL = "SELECT cid FROM Category WHERE cname = ?";
+            PreparedStatement stmtCategory = connection.prepareStatement(getCategorySQL);
+            stmtCategory.setString(1, product.getCategory());
+            ResultSet rsCategory = stmtCategory.executeQuery();
+            int cateID = 0;
+            if (rsCategory.next()) {
+                cateID = rsCategory.getInt("cid");
+            } else {
+                throw new SQLException("Category not found: " + product.getCategory());
+            }
+
+            // Update the product
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, product.getName());
+            stm.setString(2, product.getImageUrl());
+            stm.setInt(3, product.getQuantity());
+            stm.setDouble(4, product.getPrice());
+            stm.setString(5, product.getTitle());
+            stm.setString(6, product.getDescription());
+            stm.setInt(7, cateID);
+            stm.setInt(8, product.getFlowerId());
+
+            int rowsAffected = stm.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
 }

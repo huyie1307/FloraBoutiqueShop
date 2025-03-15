@@ -10,11 +10,11 @@ public class DBContext {
 
     protected Connection connection;
 
-    private final String serverName = "localhost";
-    private final String dbName = "Wish1";
-    private final String portNumber = "1433";
-    private final String userName = "sa";
-    private final String password = "123";
+    private static final String SERVER_NAME = "localhost";
+    private static final String DB_NAME = "Wish1";
+    private static final String PORT_NUMBER = "1433";
+    private static final String USERNAME = "sa";
+    private static final String PASSWORD = "123";
 
     public DBContext() {
         try {

@@ -26,8 +26,8 @@ public class ReviewDAO extends DBContext {
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, review.getRating());
             stmt.setString(2, review.getContent());
-            stmt.setInt(3, review.getAccount().getId());
-            stmt.setInt(4, review.getProduct().getId());
+            stmt.setInt(3, review.getUser().getuID());
+            stmt.setInt(4, review.getProduct().getFlowerId());
 
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {

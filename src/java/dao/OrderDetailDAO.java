@@ -45,12 +45,11 @@ public class OrderDetailDAO extends DBContext {
                 orderDetail.setId(rs.getInt("detailID"));
                 orderDetail.setQuantity(rs.getInt("quantity"));
                 orderDetail.setPrice(rs.getDouble("price"));
-                orderDetail.setPriceChange(rs.getDouble("priceChange"));
+                orderDetail.setPrice(rs.getDouble("priceChange"));
 
                 Order order = new Order();
-                order.setOrderID(rs.getInt("orderID"));
-                order.setTotalPrice(rs.getBigDecimal("totalPrice"));
-                order.setNote(rs.getString("note"));
+                order.setId(rs.getString("orderID"));
+                order.setTotal(rs.getDouble("totalPrice"));
 
                 OrderStatus orderStatus = new OrderStatus();
                 orderStatus.setId(rs.getInt("statusID"));
@@ -59,9 +58,9 @@ public class OrderDetailDAO extends DBContext {
                 orderDetail.setOrder(order);
 
                 Product product = new Product();
-                product.setId(rs.getInt("productId"));
+                product.setFlowerId(rs.getInt("productId"));
                 product.setName(rs.getString("productName"));
-                product.setImage(rs.getString("image"));
+                product.setImageUrl(rs.getString("image"));
                 product.setPrice(rs.getDouble("productPrice"));
                 orderDetail.setProduct(product);
 

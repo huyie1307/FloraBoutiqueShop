@@ -62,16 +62,14 @@ public class UpdateProductController extends HttpServlet {
             }
 
             Product product = new Product();
-            product.setId(id);
+            product.setFlowerId(id);
             product.setName(name);
             product.setTitle(title);
             product.setDescription(description);
             product.setPrice(price);
-            product.setImage(image);
-
-            Category category = new Category();
-            category.setId(categoryId);
-            product.setCategory(category);
+            product.setImageUrl(image);
+            
+            product.setCategory(categoryDAO.getCategoryNameById(categoryId));
 
             if (productDAO.updateProduct(product)) {
                 response.sendRedirect("listProduct");

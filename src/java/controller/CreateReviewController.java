@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controller;
 
 /**
@@ -10,16 +6,15 @@ package controller;
  */
 import dao.OrderDetailDAO;
 import dao.ReviewDAO;
-import entity.Account;
 import entity.Product;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import entity.Review;
+import entity.User;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -79,12 +74,12 @@ public class CreateReviewController extends HttpServlet {
         String content = request.getParameter("content");
         int productId = Integer.parseInt(request.getParameter("productId"));
         Product product = new Product();
-        product.setId(productId);
+        product.setFlowerId(productId);
         int orderDetailId = Integer.parseInt(request.getParameter("orderDetailId"));
 
         HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
-        Review review = new Review(rating, content, account, product);
+        User user = (User) session.getAttribute("user");
+        Review review = new Review(rating, content, user, product);
         int reviewId = reviewDAO.insertReview(review);
 
         orderDetailDAO.updateReviewIdInOrderDetail(orderDetailId, reviewId);

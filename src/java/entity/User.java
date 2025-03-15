@@ -29,6 +29,11 @@ public class User {
         this.address = address;
     }
 
+    public User(int uID, String username) {
+        this.uID = uID;
+        this.username = username;
+    }
+
     public int getuID() {
         return uID;
     }
