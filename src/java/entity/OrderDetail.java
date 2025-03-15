@@ -1,37 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entity;
 
-/**
- *
- * @author admin
- */
 public class OrderDetail {
+
     private int id;
     private Order order;
     private Review review;
     private Product product;
     private int quantity;
     private double price;
-    private double priceChange;
-    
-    public OrderDetail(){
-        
-    }
-    
-    public OrderDetail(int id){
-        this.id = id;
+
+    public OrderDetail() {
     }
 
-    public OrderDetail(Order order, Review review, Product product, int quantity, double price, double priceChange) {
+    public OrderDetail(int id, Order order, Review review, Product product, int quantity, double price) {
+        this.id = id;
         this.order = order;
         this.review = review;
         this.product = product;
         this.quantity = quantity;
         this.price = price;
-        this.priceChange = priceChange;
     }
 
     public int getId() {
@@ -81,14 +68,8 @@ public class OrderDetail {
     public void setPrice(double price) {
         this.price = price;
     }
-
-    public double getPriceChange() {
-        return priceChange;
+    @Override
+    public String toString() {
+        return "OrderDetail{" + "id=" + id + ", order=" + order + ", review=" + review + ", product=" + product + ", quantity=" + quantity + ", price=" + price + '}';
     }
-
-    public void setPriceChange(double priceChange) {
-        this.priceChange = priceChange;
-    }
-    
-    
 }

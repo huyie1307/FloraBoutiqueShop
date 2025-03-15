@@ -8,6 +8,7 @@ import dal.DBContext;
 import java.util.ArrayList;
 import entity.*;
 import java.sql.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,17 +27,14 @@ public class ProductDAO extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
-                p.setId(rs.getInt("pid"));
+                p.setFlowerId(rs.getInt("pid"));
                 p.setName(rs.getString("name"));
-                p.setImage(rs.getString("image"));
+                p.setImageUrl(rs.getString("image"));
+                p.setQuantity(rs.getInt("amount"));
                 p.setPrice(rs.getDouble("price"));
                 p.setTitle(rs.getString("title"));
                 p.setDescription(rs.getString("description"));
-
-                Category c = new Category();
-                c.setName(rs.getString("cname"));
-                p.setCategory(c);
-
+                p.setCategory(rs.getString("cname"));
                 productList.add(p);
             }
         } catch (SQLException ex) {

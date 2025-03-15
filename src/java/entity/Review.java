@@ -1,32 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entity;
 
-/**
- *
- * @author admin
- */
 public class Review {
+
     private int id;
     private int rating;
     private String content;
-    private Account account;
+    private User user;
     private Product product;
-    
-    public Review(){
-        
-    }
-    
-    public Review(int id){
-        this.id = id;
+
+    public Review() {
     }
 
-    public Review(int rating, String content, Account account, Product product) {
+    public Review(int id, int rating, String content, User user, Product product) {
+        this.id = id;
         this.rating = rating;
         this.content = content;
-        this.account = account;
+        this.user = user;
         this.product = product;
     }
 
@@ -54,12 +43,12 @@ public class Review {
         this.content = content;
     }
 
-    public Account getAccount() {
-        return account;
+    public User getUser() {
+        return user;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Product getProduct() {
@@ -69,6 +58,10 @@ public class Review {
     public void setProduct(Product product) {
         this.product = product;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Review{" + "id=" + id + ", rating=" + rating + ", content=" + content + ", user=" + user + ", product=" + product + '}';
+    }
+
 }

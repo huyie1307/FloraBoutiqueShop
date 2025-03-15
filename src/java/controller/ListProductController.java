@@ -9,11 +9,11 @@ import dao.ProductDAO;
 import entity.Category;
 import entity.Product;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 /**
@@ -21,29 +21,22 @@ import java.util.ArrayList;
  * @author ASUS
  */
 public class ListProductController extends HttpServlet {
-
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Returns a short description of the servlet.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @return a String containing servlet description
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+
+        HttpSession session = request.getSession();
+
+        ProductDAO productDAO = new ProductDAO();
+        ArrayList<Product> products = productDAO.listAllProduct();
+        session.setAttribute("products", products);
+        request.getRequestDispatcher("myProduct.jsp").forward(request, response);
     }
 
     /**
@@ -67,15 +60,5 @@ public class ListProductController extends HttpServlet {
         request.setAttribute("category", categoryList);
         request.getRequestDispatcher("product.jsp").forward(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

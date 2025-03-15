@@ -1,116 +1,88 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entity;
 
-/**
- *
- * @author Huyie
- */
-import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class Order {
 
-    private int orderID;
-    private int userID;
-    private int statusID;
-    private BigDecimal totalPrice;
-    private Timestamp orderDate;
-    private Timestamp completedDate;
-    private int paymentMethodID;
-    private Integer discountCodeID; // Dùng Integer để cho phép null
-    private String note;
+    private String id;
+    private User user;
+    private Status status;
+    private double total;
+    private Date orderDate;
+    private Date completeDate;
+    private PaymentMethod method;
 
     public Order() {
-        
     }
 
-    public Order(int orderID, int userID, int statusID, BigDecimal totalPrice,
-            Timestamp orderDate, Timestamp completedDate,
-            int paymentMethodID, Integer discountCodeID, String note) {
-        this.orderID = orderID;
-        this.userID = userID;
-        this.statusID = statusID;
-        this.totalPrice = totalPrice;
+    public Order(String id, User user, Status status, double total, Date orderDate, Date completeDate, PaymentMethod method) {
+        this.id = id;
+        this.user = user;
+        this.status = status;
+        this.total = total;
         this.orderDate = orderDate;
-        this.completedDate = completedDate;
-        this.paymentMethodID = paymentMethodID;
-        this.discountCodeID = discountCodeID;
-        this.note = note;
+        this.completeDate = completeDate;
+        this.method = method;
     }
 
-    // Getters and Setters
-    public int getOrderID() {
-        return orderID;
+    public String getId() {
+        return id;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public int getUserID() {
-        return userID;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getStatusID() {
-        return statusID;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusID(int statusID) {
-        this.statusID = statusID;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
+    public double getTotal() {
+        return total;
     }
 
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setTotal(double total) {
+        this.total = total;
     }
 
-    public Timestamp getOrderDate() {
+    public Date getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Timestamp orderDate) {
+    public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
 
-    public Timestamp getCompletedDate() {
-        return completedDate;
+    public Date getCompleteDate() {
+        return completeDate;
     }
 
-    public void setCompletedDate(Timestamp completedDate) {
-        this.completedDate = completedDate;
+    public void setCompleteDate(Date completeDate) {
+        this.completeDate = completeDate;
     }
 
-    public int getPaymentMethodID() {
-        return paymentMethodID;
+    public PaymentMethod getMethod() {
+        return method;
     }
 
-    public void setPaymentMethodID(int paymentMethodID) {
-        this.paymentMethodID = paymentMethodID;
+    public void setMethod(PaymentMethod method) {
+        this.method = method;
     }
 
-    public Integer getDiscountCodeID() {
-        return discountCodeID;
-    }
-
-    public void setDiscountCodeID(Integer discountCodeID) {
-        this.discountCodeID = discountCodeID;
-    }
-
-    public String getNote() {
-        return note;
-    }
-    
-    public void setNote(String note) {
-        this.note = note;
+    @Override
+    public String toString() {
+        return "Order{" + "id=" + id + ", user=" + user + ", status=" + status + ", total=" + total + ", orderDate=" + orderDate + ", completeDate=" + completeDate + ", method=" + method + '}';
     }
 }

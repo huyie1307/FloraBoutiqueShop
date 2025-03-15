@@ -1,14 +1,14 @@
 package entity;
 
-public class PaymentMethod {
+public class Status {
 
     private int id;
     private String name;
 
-    public PaymentMethod() {
+    public Status() {
     }
 
-    public PaymentMethod(int id, String name) {
+    public Status(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -31,7 +31,7 @@ public class PaymentMethod {
 
     @Override
     public String toString() {
-        return "PaymentMethod{" + "id=" + id + ", name=" + name + '}';
+        return "Status{" + "id=" + id + ", name=" + name + '}';
     }
 
 }

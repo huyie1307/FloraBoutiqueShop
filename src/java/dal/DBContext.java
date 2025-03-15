@@ -18,11 +18,21 @@ public class DBContext {
 
     public DBContext() {
         try {
-            String url = "jdbc:sqlserver://" + serverName + ":" + portNumber + ";databaseName=" + dbName + "";
+            String url = "jdbc:sqlserver://" + SERVER_NAME + ":" + PORT_NUMBER
+                    + ";databaseName=" + DB_NAME
+                    + ";encrypt=true;trustServerCertificate=true";
+
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(url, userName, password);
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+            connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
+            System.out.println("Connected to database successfully!");
+        } catch (ClassNotFoundException e) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, "JDBC Driver not found!", e);
+        } catch (SQLException e) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, "Connection failed!", e);
         }
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 }

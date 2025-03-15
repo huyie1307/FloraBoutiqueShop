@@ -26,9 +26,5 @@
         <a href="admin?action=cus">👤 Users</a>
            <a href="admin?action=listProduct">🛒 List Products</a> <!-- Liên kết tới trang quản lý sản phẩm -->
     </div>
-    
-
-    
-
 </body>
 </html>

@@ -30,7 +30,7 @@
                     <!-- Navbar -->
                     <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
                         <div class="container-fluid ps-2 pe-0">
-                            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="index.html">
+                            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="home">
                                 Quay trở lại trang chủ
                             </a>
                         </div>
@@ -71,6 +71,9 @@
                                         <div class="input-group input-group-outline my-4">
                                             <input type="text" class="form-control" name="phone" id="text" placeholder="">
                                             <label for="text" class="form-label">Số điện thoại</label>
+                                        </div><div class="input-group input-group-outline my-4">
+                                            <input type="text" class="form-control" name="address" id="text" placeholder="">
+                                            <label for="text" class="form-label">Địa chỉ</label>
                                         </div>
                                         <div class="text-center">
                                             <button type="submit"  id ="sign" class="btn" style="background-color: #ff69b4; color: white;" class="w-100 my-4 mb-2">Sign up</button>
