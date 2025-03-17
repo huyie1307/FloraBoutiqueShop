@@ -68,7 +68,10 @@
         <servlet-name>CheckoutServlet</servlet-name>
         <servlet-class>controller.CheckoutServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>OnlinePaymentServlet</servlet-name>
+        <servlet-class>controller.OnlinePaymentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -136,5 +139,9 @@
     <servlet-mapping>
         <servlet-name>CheckoutServlet</servlet-name>
         <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OnlinePaymentServlet</servlet-name>
+        <url-pattern>/onlinepayment</url-pattern>
     </servlet-mapping>
 </web-app>

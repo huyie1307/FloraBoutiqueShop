@@ -34,7 +34,10 @@ public class ProductDAO extends DBContext {
                 p.setPrice(rs.getDouble("price"));
                 p.setTitle(rs.getString("title"));
                 p.setDescription(rs.getString("description"));
-                p.setCategory(rs.getString("cname"));
+
+                Category category = new Category();
+                category.setName(rs.getString("cname"));
+                p.setCategory(category);
 
                 productList.add(p);
             }
@@ -101,10 +104,10 @@ public class ProductDAO extends DBContext {
 
     public Product getProductById(int id) {
         Product product = null;
-        String sql = "SELECT p.pid, p.name, p.image, p.amount, p.price, p.title, p.description, c.cname " +
-                "FROM Product p " +
-                "JOIN Category c ON c.cid = p.cateID " +
-                "WHERE p.pid = ?";
+        String sql = "SELECT p.pid, p.name, p.image, p.amount, p.price, p.title, p.description, c.cname "
+                + "FROM Product p "
+                + "JOIN Category c ON c.cid = p.cateID "
+                + "WHERE p.pid = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
@@ -118,7 +121,10 @@ public class ProductDAO extends DBContext {
                 product.setPrice(rs.getDouble("price"));
                 product.setTitle(rs.getString("title"));
                 product.setDescription(rs.getString("description"));
-                product.setCategory(rs.getString("cname"));
+
+                Category category = new Category();
+                category.setName(rs.getString("cname"));
+                product.setCategory(category);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -127,13 +133,18 @@ public class ProductDAO extends DBContext {
     }
 
     public boolean updateProduct(Product product) {
-        String sql = "UPDATE Product SET name = ?, image = ?, amount = ?, price = ?, title = ?, description = ?, cateID = ? " +
-                "WHERE pid = ?";
+        String sql = "UPDATE Product SET name = ?, image = ?, amount = ?, price = ?, title = ?, description = ?, cateID = ? "
+                + "WHERE pid = ?";
         try {
             // Retrieve the category ID based on the category name
             String getCategorySQL = "SELECT cid FROM Category WHERE cname = ?";
             PreparedStatement stmtCategory = connection.prepareStatement(getCategorySQL);
-            stmtCategory.setString(1, product.getCategory());
+            ResultSet result = stmtCategory.executeQuery();
+
+            Category category = new Category();
+            category.setId(result.getInt("cid"));
+
+            stmtCategory.setInt(1, category.getId());
             ResultSet rsCategory = stmtCategory.executeQuery();
             int cateID = 0;
             if (rsCategory.next()) {

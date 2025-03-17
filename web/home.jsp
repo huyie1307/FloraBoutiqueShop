@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,12 +23,12 @@
                 <a href="#about">about</a>
                 <a href="#shop">shop</a>
                 <a href="listProduct">My Products</a>
-                <a href="flowerz">Test</a>
                 <a href="#contact">contact</a>
                 <a href="#blog">blog</a>
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
-                        <a href="listorder">My Order</a>
+                        <a href="listorder">My Cart</a>
+                        <a href="#">My Order</a>
                         <a href="#">Hello, ${sessionScope.user.name}</a>
                         <a href="logout">Logout</a>
                     </c:when>
@@ -136,126 +137,33 @@
         <!-- shop section start -->
         <div class="shop" id="shop">
             <h1 class="heading">our best products</h1>
-            <div class="box-container">
-                <div class="box">
-                    <img src="image/poduct.jpg" alt="">
-                    <p class="price">price : $10/-</p>
-                    <div class="detail">
-                        <h1 class="heading">red rose flowers</h1>
-                        <div class="icon">
-                            <i class="fa fa-heart"></i>
-                            <i class="fa fa-cart-plus"></i>
-                            <i class="fa fa-eye"></i>
+
+            <div class="box-container" id="productList">
+                <c:forEach var="product" items="${sessionScope.products}">
+                    <div class="box" data-name="${product.name}">
+                        <img src="${product.imageUrl}" alt="${product.getName()}" style="width: 500px; height: 500px; object-fit: cover; border-radius: 5px;">
+                        <p class="price">price : <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" groupingUsed="true" /></p>
+                        <div class="detail">
+                            <h1 class="heading" 
+                                style="font-size: 20px; font-weight: bold; text-align: center; color: #333;
+                                padding: 10px 0; transition: 0.3s;"
+                                onmouseover="this.style.color = '#d9534f'" 
+                                onmouseout="this.style.color = '#333'">
+                                ${product.name}
+                            </h1>
+                            <div class="add-to-cart-btn" data-product-id="${product.flowerId}">
+                                <i class="fa fa-cart-plus" 
+                                   style="font-size: 24px; color: #d9534f; cursor: pointer; padding: 10px;
+                                   border-radius: 50%; background: #ffe6e6; transition: 0.3s;"
+                                   onmouseover="this.style.background = '#ffcccc'" 
+                                   onmouseout="this.style.background = '#ffe6e6'"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- product item -->
-                <div class="box">
-                    <img src="image/product0.jpg" alt="">
-                    <p class="price">price : $17/-</p>
-                    <div class="detail">
-                        <h1 class="heading">red rose flowers</h1>
-                        <div class="icon">
-                            <i class="fa fa-heart"></i>
-                            <i class="fa fa-cart-plus"></i>
-                            <i class="fa fa-eye"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- product item -->
-                <div class="box">
-                    <img src="image/product1.jpg" alt="">
-                    <p class="price">price : $10/-</p>
-                    <div class="detail">
-                        <h1 class="heading">red rose flowers</h1>
-                        <div class="icon">
-                            <i class="fa fa-heart"></i>
-                            <i class="fa fa-cart-plus"></i>
-                            <i class="fa fa-eye"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- product item -->
-                <div class="box">
-                    <img src="image/product2.jpg" alt="">
-                    <p class="price">price : $15/-</p>
-                    <div class="detail">
-                        <h1 class="heading">red rose flowers</h1>
-                        <div class="icon">
-                            <i class="fa fa-heart"></i>
-                            <i class="fa fa-cart-plus"></i>
-                            <i class="fa fa-eye"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- product item -->
-                <div class="box">
-                    <img src="image/product3.jpg" alt="">
-                    <p class="price">price : $20/-</p>
-                    <div class="detail">
-                        <h1 class="heading">red rose flowers</h1>
-                        <div class="icon">
-                            <i class="fa fa-heart"></i>
-                            <i class="fa fa-cart-plus"></i>
-                            <i class="fa fa-eye"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- product item -->
-                <div class="box">
-                    <img src="image/product4.jpg" alt="">
-                    <p class="price">price : $90/-</p>
-                    <div class="detail">
-                        <h1 class="heading">red rose flowers</h1>
-                        <div class="icon">
-                            <i class="fa fa-heart"></i>
-                            <i class="fa fa-cart-plus"></i>
-                            <i class="fa fa-eye"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- product item -->
-                <div class="box">
-                    <img src="image/product5.jpg" alt="">
-                    <p class="price">price : $10/-</p>
-                    <div class="detail">
-                        <h1 class="heading">red rose flowers</h1>
-                        <div class="icon">
-                            <i class="fa fa-heart"></i>
-                            <i class="fa fa-cart-plus"></i>
-                            <i class="fa fa-eye"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- product item -->
-                <div class="box">
-                    <img src="image/product6.jpg" alt="">
-                    <p class="price">price : $10/-</p>
-                    <div class="detail">
-                        <h1 class="heading">red rose flowers</h1>
-                        <div class="icon">
-                            <i class="fa fa-heart"></i>
-                            <i class="fa fa-cart-plus"></i>
-                            <i class="fa fa-eye"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- product item -->
-                <div class="box">
-                    <img src="image/product7.jpg" alt="">
-                    <p class="price">price : $10/-</p>
-                    <div class="detail">
-                        <h1 class="heading">red rose flowers</h1>
-                        <div class="icon">
-                            <i class="fa fa-heart"></i>
-                            <i class="fa fa-cart-plus"></i>
-                            <i class="fa fa-eye"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- product item -->
+                </c:forEach>
             </div>
         </div>
+
         <!-- contact section start -->
         <section class="contact" id="contact">
             <form action="">
@@ -374,6 +282,95 @@
             </div>
         </footer>
 
-        <script src="script.js"></script>
+
     </body>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+           $(document).ready(function () {
+               $(".add-to-cart-btn").on("click", function () {
+                   let productId = $(this).data("product-id");
+                   $.ajax({
+                       url: "addToCart",
+                       type: "POST",
+                       data: {pid: productId},
+                       success: function (response) {
+                           response = response.trim();
+                           if (response === "success") {
+                               showNotification("Sản phẩm đã được thêm vào giỏ hàng!", "success");
+                           } else if (response === "not_logged_in") {
+                               window.location.href = "login"; // Chuyển hướng khi chưa đăng nhập
+                           } else {
+                               showNotification("Thêm sản phẩm thất bại!", "error");
+                           }
+                       },
+                       error: function () {
+                           showNotification("Có lỗi xảy ra, vui lòng thử lại.", "error");
+                       }
+                   });
+               });
+
+               // Hàm hiển thị thông báo
+               function showNotification(message, type) {
+                   let bgColor = type === "success" ? "#28a745" : "#dc3545";
+                   let progressColor = type === "success" ? "#ffffff" : "#ff9999";
+
+                   // Tạo thông báo
+                   let notification = $("<div></div>", {
+                       class: "cart-notification",
+                       text: message,
+                       css: {
+                           "position": "fixed",
+                           "top": "-60px",
+                           "left": "50%",
+                           "transform": "translateX(-50%)",
+                           "padding": "12px 25px",
+                           "background": bgColor,
+                           "color": "white",
+                           "border-radius": "10px",
+                           "z-index": "1000",
+                           "font-weight": "bold",
+                           "box-shadow": "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                           "min-width": "280px",
+                           "text-align": "center",
+                           "opacity": "0",
+                           "transition": "opacity 0.3s ease-in-out, top 0.3s ease-in-out"
+                       }
+                   });
+
+                   // Thanh trượt
+                   let progressBar = $("<div></div>", {
+                       class: "progress-bar",
+                       css: {
+                           "position": "absolute",
+                           "bottom": "0",
+                           "left": "0",
+                           "height": "4px",
+                           "background": progressColor,
+                           "width": "0%",
+                           "border-radius": "0 0 10px 10px",
+                           "transition": "width 2s linear"
+                       }
+                   });
+
+                   notification.append(progressBar);
+                   $("body").append(notification);
+
+                   // Hiển thị thông báo
+                   setTimeout(() => {
+                       notification.css({"top": "20px", "opacity": "1"});
+                       progressBar.css("width", "100%");
+                   }, 100);
+
+                   // Sau 3 giây, làm mờ dần rồi biến mất
+                   setTimeout(() => {
+                       notification.css({"opacity": "0", "top": "-60px"});
+                       setTimeout(() => notification.remove(), 200);
+                   }, 2000);
+               }
+           });
+    </script>
+
 </html>

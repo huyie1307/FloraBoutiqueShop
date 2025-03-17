@@ -106,61 +106,6 @@
                     color: #FF0080; /* Màu nổi bật hơn */
                 }
 
-            </style>
-
-            <div class="cart-header d-flex align-items-center">
-                <a href="index.html" class="logo">
-                    <img src="image/logo.png" alt="Logo">
-                </a>
-                <h4 class="mb-0 ms-3">Danh sách sản phẩm</h4>
-            </div>
-        </div>
-        <div class="cart-header d-flex align-items-center">
-            <h4 class="mb-0 ms-3">${success}</h4>
-        </div>
-        <div class="container">
-            <!-- Dropdown chọn danh mục -->
-            <div class="card p-3 mb-4">
-                <h5>Chọn danh mục</h5>
-                <form action="flowerz" method="get">
-                    <select name="category" class="form-select" onchange="this.form.submit()">
-                        <option value="all" ${category == 'all' ? 'selected' : ''}>Tất cả</option>
-                        <option value="custom" ${category == 'custom' ? 'selected' : ''}>Custom Flowers</option>
-                        <option value="funeral" ${category == 'funeral' ? 'selected' : ''}>Funeral Flowers</option>
-                        <option value="service" ${category == 'service' ? 'selected' : ''}>Service Flowers</option>
-                    </select>
-                </form>
-
-
-            </div>
-
-
-            <!-- Bảng danh sách sản phẩm -->
-            <div class="container mt-4">
-                <div class="row">
-                    <c:forEach var="p" items="${sessionScope.products}">
-                        <div class="col-12 mb-3 product-item">
-                            <div class="product-card d-flex align-items-center">
-                                <img src="${p.getImageUrl()}" alt="${p.getName()}" class="product-image">
-                                <div class="product-info">
-                                    <h5 class="product-name">${p.getName()}</h5>
-                                    <p class="product-type">TYPE: ${p.getCategory()}</p>
-                                    <p class="product-amount">AMOUNT: ${p.getQuantity()}</p>
-                                    <p class="product-price">
-                                        <fmt:formatNumber value="${p.getPrice()}" type="currency" currencySymbol="₫" groupingUsed="true" />
-                                    </p>
-                                    <button class="add-to-cart">
-                                        <a href="addToCart?pid=${p.flowerId}" style="text-decoration:none; color:inherit;">ADD TO CART</a>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-                    </c:forEach>
-                </div>
-            </div>
-
-            <style>
                 .product-card {
                     background: #fff;
                     padding: 15px;
@@ -188,21 +133,160 @@
                     font-weight: bold;
                     color: red;
                 }
-                .add-to-cart {
-                    background: #98c379;
-                    color: black;
+
+                .add-to-cart-btn {
+                    display: inline-block;
+                    background-color: #FF0080; /* Màu hồng */
+                    color: white;
+                    font-size: 16px;
                     font-weight: bold;
-                    padding: 8px 12px;
+                    padding: 10px 18px;
                     border: none;
-                    border-radius: 5px;
+                    border-radius: 8px;
                     cursor: pointer;
+                    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
                 }
-                .add-to-cart:hover {
-                    background: #7da366;
+
+                .add-to-cart-btn:hover {
+                    background-color: #cc0066; /* Màu hồng đậm hơn khi hover */
+                    transform: scale(1.05); /* Phóng to nhẹ */
+                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
                 }
+
+
             </style>
 
+            <div class="cart-header d-flex align-items-center">
+                <a href="index.html" class="logo">
+                    <img src="image/logo.png" alt="Logo">
+                </a>
+                <h4 class="mb-0 ms-3">Danh sách sản phẩm</h4>
+            </div>
+        </div>
+        <div class="container">
+            <!-- Dropdown chọn danh mục -->
+            <div class="card p-3 mb-4">
+                <h5>Chọn danh mục</h5>
+                <form action="flowerz" method="get">
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="all" ${category == 'all' ? 'selected' : ''}>Tất cả</option>
+                        <option value="custom" ${category == 'custom' ? 'selected' : ''}>Custom Flowers</option>
+                        <option value="funeral" ${category == 'funeral' ? 'selected' : ''}>Funeral Flowers</option>
+                        <option value="service" ${category == 'service' ? 'selected' : ''}>Service Flowers</option>
+                    </select>
+                </form>
+            </div>
+        </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Bảng danh sách sản phẩm -->
+        <div class="container mt-4">
+            <div class="row">
+                <c:forEach var="p" items="${sessionScope.products}">
+                    <div class="col-lg-2 col-md-3 col-sm-6 mb-3 product-item">
+                        <div class="product-card text-center">
+                            <img src="${p.getImageUrl()}" alt="${p.getName()}" class="product-image img-fluid">
+                            <div class="product-info">
+                                <h5 class="product-name">${p.getName()}</h5>
+                                <p class="product-type">TYPE: ${p.getCategory().getName()}</p>
+                                <p class="product-amount">AMOUNT: ${p.getQuantity()}</p>
+                                <p class="product-price">
+                                    <fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" groupingUsed="true" />
+                                </p>
+                                <button class="add-to-cart-btn" data-product-id="${p.flowerId}">ADD TO CART</button>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+                        $(document).ready(function () {
+                            $(".add-to-cart-btn").on("click", function () {
+                                let productId = $(this).data("product-id");
+                                $.ajax({
+                                    url: "addToCart",
+                                    type: "POST",
+                                    data: {pid: productId},
+                                    success: function (response) {
+                                        response = response.trim();
+                                        if (response === "success") {
+                                            showNotification("Sản phẩm đã được thêm vào giỏ hàng!", "success");
+                                        } else if (response === "not_logged_in") {
+                                            window.location.href = "login"; // Chuyển hướng khi chưa đăng nhập
+                                        } else {
+                                            showNotification("Thêm sản phẩm thất bại!", "error");
+                                        }
+                                    },
+                                    error: function () {
+                                        showNotification("Có lỗi xảy ra, vui lòng thử lại.", "error");
+                                    }
+                                });
+                            });
+
+                            // Hàm hiển thị thông báo
+                            function showNotification(message, type) {
+                                let bgColor = type === "success" ? "#28a745" : "#dc3545";
+                                let progressColor = type === "success" ? "#ffffff" : "#ff9999";
+
+                                // Tạo thông báo
+                                let notification = $("<div></div>", {
+                                    class: "cart-notification",
+                                    text: message,
+                                    css: {
+                                        "position": "fixed",
+                                        "top": "-60px",
+                                        "left": "50%",
+                                        "transform": "translateX(-50%)",
+                                        "padding": "12px 25px",
+                                        "background": bgColor,
+                                        "color": "white",
+                                        "border-radius": "10px",
+                                        "z-index": "1000",
+                                        "font-weight": "bold",
+                                        "box-shadow": "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                                        "min-width": "280px",
+                                        "text-align": "center",
+                                        "opacity": "0",
+                                        "transition": "opacity 0.3s ease-in-out, top 0.3s ease-in-out"
+                                    }
+                                });
+
+                                // Thanh trượt
+                                let progressBar = $("<div></div>", {
+                                    class: "progress-bar",
+                                    css: {
+                                        "position": "absolute",
+                                        "bottom": "0",
+                                        "left": "0",
+                                        "height": "4px",
+                                        "background": progressColor,
+                                        "width": "0%",
+                                        "border-radius": "0 0 10px 10px",
+                                        "transition": "width 2s linear"
+                                    }
+                                });
+
+                                notification.append(progressBar);
+                                $("body").append(notification);
+
+                                // Hiển thị thông báo
+                                setTimeout(() => {
+                                    notification.css({"top": "20px", "opacity": "1"});
+                                    progressBar.css("width", "100%");
+                                }, 100);
+
+                                // Sau 3 giây, làm mờ dần rồi biến mất
+                                setTimeout(() => {
+                                    notification.css({"opacity": "0", "top": "-60px"});
+                                    setTimeout(() => notification.remove(), 200);
+                                }, 2000);
+                            }
+                        });
+        </script>
     </body>
 </html>

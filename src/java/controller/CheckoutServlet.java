@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,9 +54,19 @@ public class CheckoutServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        List<Cart> carts = (List<Cart>) session.getAttribute("carts");
-        String paymentMethodCheck = request.getParameter("paymentMethod");
 
+        // Lấy thông tin đơn hàng từ request
+        String currentName = request.getParameter("name");
+        String currentPhone = request.getParameter("phone");
+        String currentAddress = request.getParameter("address");
+        String orderNote = request.getParameter("orderNote");
+        String paymentMethodCheck = request.getParameter("paymentMethod");
+        String receiveDateStr = request.getParameter("receiveDate");
+
+        // Lấy danh sách cart từ session
+        List<Cart> carts = (List<Cart>) session.getAttribute("carts");
+
+        // Tính tổng tiền đơn hàng
         BigDecimal totalPrice = BigDecimal.ZERO;
         for (Cart cart : carts) {
             BigDecimal itemTotal = BigDecimal.valueOf(cart.getProduct().getPrice())
@@ -62,29 +74,41 @@ public class CheckoutServlet extends HttpServlet {
             totalPrice = totalPrice.add(itemTotal);
         }
 
+        // Status Pending có id = 1
         int statusID = 1;
-        int paymentMethodID;
+        int paymentMethodID = "online".equals(paymentMethodCheck) ? 1 : 2;
 
-        if ("direct".equals(paymentMethodCheck)) {
-            paymentMethodID = 2;
-        } else if ("online".equals(paymentMethodCheck)) {
-            paymentMethodID = 1;
-        } else {
-            paymentMethodID = 2;
-        }
-
+        // Tạo đối tượng Status và PaymentMethod
         Status status = new Status();
         status.setId(statusID);
 
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setId(paymentMethodID);
 
+        // Tạo đối tượng Order và set các thông tin cần thiết
         Order order = new Order();
         order.setUser(user);
         order.setStatus(status);
+        order.setCurrentName(currentName);
+        order.setCurrentPhone(currentPhone);
+        order.setCurrentAddress(currentAddress);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+        try {
+            LocalDateTime receiveDate = LocalDateTime.parse(receiveDateStr, formatter);
+            order.setCompleteDate(receiveDate);
+        } catch (Exception e) {
+            System.out.println("Bug in here");
+            System.out.println(e);
+            return;
+        }
+
+        order.setNote(orderNote);
         order.setTotal(totalPrice.doubleValue());
         order.setMethod(paymentMethod);
 
+        // Sử dụng OrderDAO để thêm sản phẩm vào đơn hàng
         OrderDAO orderDAO = new OrderDAO();
         boolean orderSuccess = true;
         for (Cart cart : carts) {
@@ -93,6 +117,7 @@ public class CheckoutServlet extends HttpServlet {
             detail.setQuantity(cart.getAmount());
             detail.setPrice(cart.getProduct().getPrice());
 
+            // Gọi hàm addProduct đã được cập nhật để thêm hoặc cập nhật sản phẩm trong đơn hàng
             boolean result = orderDAO.addProduct(order, detail);
             if (!result) {
                 orderSuccess = false;
@@ -101,10 +126,19 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         if (orderSuccess) {
-
+            // Sau khi đặt hàng thành công, xóa các mục trong giỏ hàng
             CartDAO cartDAO = new CartDAO();
             for (Cart cart : carts) {
                 cartDAO.deleteCartById(cart.getId());
+            }
+
+            // Nếu là thanh toán online thì chuyển sang trang thanh toán online
+            if (paymentMethodID == 1) {
+                session.setAttribute("carts", carts);
+                session.setAttribute("totalPrice", totalPrice);
+                session.setAttribute("receiveDate", receiveDateStr);
+                response.sendRedirect("onlinepayment");
+                return;
             }
 
             session.removeAttribute("carts");

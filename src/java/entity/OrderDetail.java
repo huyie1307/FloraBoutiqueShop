@@ -21,6 +21,14 @@ public class OrderDetail {
         this.price = price;
     }
 
+    public OrderDetail(Order order, Review review, Product product, int quantity, double price) {
+        this.order = order;
+        this.review = review;
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public int getId() {
         return id;
     }
@@ -68,6 +76,7 @@ public class OrderDetail {
     public void setPrice(double price) {
         this.price = price;
     }
+
     @Override
     public String toString() {
         return "OrderDetail{" + "id=" + id + ", order=" + order + ", review=" + review + ", product=" + product + ", quantity=" + quantity + ", price=" + price + '}';

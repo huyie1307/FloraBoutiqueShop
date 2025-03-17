@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Order {
@@ -7,24 +8,45 @@ public class Order {
     private String id;
     private User user;
     private Status status;
+    private String currentName;
+    private String currentPhone;
+    private String currentAddress;
     private double total;
     private Date orderDate;
-    private Date completeDate;
+    private LocalDateTime completeDate;
     private PaymentMethod method;
+    private String note;
 
     public Order() {
     }
 
-    public Order(String id, User user, Status status, double total, Date orderDate, Date completeDate, PaymentMethod method) {
+    public Order(String id, User user, Status status, String currentName, String currentPhone, String currentAddress, double total, Date orderDate, LocalDateTime completeDate, PaymentMethod method, String note) {
         this.id = id;
         this.user = user;
         this.status = status;
+        this.currentName = currentName;
+        this.currentPhone = currentPhone;
+        this.currentAddress = currentAddress;
         this.total = total;
         this.orderDate = orderDate;
         this.completeDate = completeDate;
         this.method = method;
+        this.note = note;
     }
 
+    public Order(User user, Status status, String currentName, String currentPhone, String currentAddress, double total, Date orderDate, LocalDateTime completeDate, PaymentMethod method, String note) {
+        this.user = user;
+        this.status = status;
+        this.currentName = currentName;
+        this.currentPhone = currentPhone;
+        this.currentAddress = currentAddress;
+        this.total = total;
+        this.orderDate = orderDate;
+        this.completeDate = completeDate;
+        this.method = method;
+        this.note = note;
+    }
+    
     public String getId() {
         return id;
     }
@@ -49,6 +71,30 @@ public class Order {
         this.status = status;
     }
 
+    public String getCurrentName() {
+        return currentName;
+    }
+
+    public void setCurrentName(String currentName) {
+        this.currentName = currentName;
+    }
+
+    public String getCurrentPhone() {
+        return currentPhone;
+    }
+
+    public void setCurrentPhone(String currentPhone) {
+        this.currentPhone = currentPhone;
+    }
+
+    public String getCurrentAddress() {
+        return currentAddress;
+    }
+
+    public void setCurrentAddress(String currentAddress) {
+        this.currentAddress = currentAddress;
+    }
+
     public double getTotal() {
         return total;
     }
@@ -65,11 +111,11 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public Date getCompleteDate() {
+    public LocalDateTime getCompleteDate() {
         return completeDate;
     }
 
-    public void setCompleteDate(Date completeDate) {
+    public void setCompleteDate(LocalDateTime completeDate) {
         this.completeDate = completeDate;
     }
 
@@ -81,8 +127,17 @@ public class Order {
         this.method = method;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", user=" + user + ", status=" + status + ", total=" + total + ", orderDate=" + orderDate + ", completeDate=" + completeDate + ", method=" + method + '}';
+        return "Order{" + "id=" + id + ", user=" + user + ", status=" + status + ", currentName=" + currentName + ", currentPhone=" + currentPhone + ", currentAddress=" + currentAddress + ", total=" + total + ", orderDate=" + orderDate + ", completeDate=" + completeDate + ", method=" + method + ", note=" + note + '}';
     }
+
 }

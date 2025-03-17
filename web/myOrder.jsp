@@ -210,9 +210,20 @@
                             url: 'deletecart',
                             type: 'POST',
                             data: {id: cartId},
-                            success: () => location.reload(),
-                            error: () => alert('Xóa sản phẩm thất bại. Vui lòng thử lại.')
+                            success: function () {
+                                localStorage.setItem("deleteSuccess", "Xóa sản phẩm thành công.");
+                                location.reload();
+                            },
+                            error: () => showNotification('Xóa sản phẩm thất bại. Vui lòng thử lại.', "error")
                         });
+                    }
+                });
+
+                $(document).ready(function () {
+                    const message = localStorage.getItem("deleteSuccess");
+                    if (message) {
+                        showNotification(message, "success");
+                        localStorage.removeItem("deleteSuccess"); // Xóa thông báo sau khi hiển thị
                     }
                 });
 
@@ -240,9 +251,9 @@
                                 if ($row.find('.product-checkbox').is(':checked'))
                                     updateTotal();
                             } else
-                                alert("Cập nhật số lượng thất bại.");
+                                showNotification("Cập nhật số lượng thất bại.", "error");
                         },
-                        error: () => alert("Có lỗi xảy ra. Vui lòng thử lại.")
+                        error: () => showNotification("Có lỗi xảy ra. Vui lòng thử lại.", "error")
                     });
                 });
 
@@ -264,9 +275,9 @@
                                     if ($row.find('.product-checkbox').is(':checked'))
                                         updateTotal();
                                 } else
-                                    alert("Cập nhật số lượng thất bại.");
+                                    showNotification("Cập nhật số lượng thất bại.", "error");
                             },
-                            error: () => alert("Có lỗi xảy ra. Vui lòng thử lại.")
+                            error: () => showNotification("Có lỗi xảy ra. Vui lòng thử lại.", "error")
                         });
                     }
                 });
@@ -276,11 +287,70 @@
                         return $(this).val();
                     }).get();
                     if (!selectedCartIds.length) {
-                        alert("Vui lòng chọn ít nhất 1 sản phẩm để thanh toán.");
+                        showNotification("Vui lòng chọn ít nhất 1 sản phẩm để thanh toán.", "error");
                         return;
                     }
                     window.location.href = 'checkout?cartIds=' + selectedCartIds.join(',');
                 });
+
+                // Hàm hiển thị thông báo
+                function showNotification(message, type) {
+                    let bgColor = type === "success" ? "#28a745" : "#dc3545";
+                    let progressColor = type === "success" ? "#ffffff" : "#ff9999";
+
+                    // Tạo thông báo
+                    let notification = $("<div></div>", {
+                        class: "cart-notification",
+                        text: message,
+                        css: {
+                            "position": "fixed",
+                            "top": "-60px",
+                            "left": "50%",
+                            "transform": "translateX(-50%)",
+                            "padding": "12px 25px",
+                            "background": bgColor,
+                            "color": "white",
+                            "border-radius": "10px",
+                            "z-index": "1000",
+                            "font-weight": "bold",
+                            "box-shadow": "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                            "min-width": "280px",
+                            "text-align": "center",
+                            "opacity": "0",
+                            "transition": "opacity 0.3s ease-in-out, top 0.3s ease-in-out"
+                        }
+                    });
+
+                    // Thanh trượt
+                    let progressBar = $("<div></div>", {
+                        class: "progress-bar",
+                        css: {
+                            "position": "absolute",
+                            "bottom": "0",
+                            "left": "0",
+                            "height": "4px",
+                            "background": progressColor,
+                            "width": "0%",
+                            "border-radius": "0 0 10px 10px",
+                            "transition": "width 2s linear"
+                        }
+                    });
+
+                    notification.append(progressBar);
+                    $("body").append(notification);
+
+                    // Hiển thị thông báo
+                    setTimeout(() => {
+                        notification.css({"top": "20px", "opacity": "1"});
+                        progressBar.css("width", "100%");
+                    }, 100);
+
+                    // Sau 3 giây, làm mờ dần rồi biến mất
+                    setTimeout(() => {
+                        notification.css({"opacity": "0", "top": "-60px"});
+                        setTimeout(() => notification.remove(), 200);
+                    }, 2000);
+                }
 
                 updateTotal();
             });

@@ -71,7 +71,7 @@ public class AddProductController extends HttpServlet {
             product.setDescription(description);
             product.setPrice(price);
             product.setImageUrl(image);
-            product.setCategory(categoryDAO.getCategoryNameById(categoryId));
+            product.setCategory(category);
             
             // Thêm sản phẩm vào database
             if (productDAO.addProduct(product.getName(), product.getImageUrl(), product

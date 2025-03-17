@@ -4,7 +4,7 @@ public class Product {
 
     private int flowerId;
     private String name;
-    private String category;
+    private Category category;
     private int quantity;
     private double price;
     private String imageUrl;
@@ -15,7 +15,7 @@ public class Product {
 
     }
 
-    public Product(int flowerId, String name, String category, int quantity, double price, String imageUrl) {
+    public Product(int flowerId, String name, Category category, int quantity, double price, String imageUrl) {
         this.flowerId = flowerId;
         this.name = name;
         this.category = category;
@@ -24,7 +24,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public Product(int flowerId, String name, String category, int quantity, double price, String imageUrl, String title, String description) {
+    public Product(int flowerId, String name, Category category, int quantity, double price, String imageUrl, String title, String description) {
         this.flowerId = flowerId;
         this.name = name;
         this.category = category;
@@ -51,11 +51,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
