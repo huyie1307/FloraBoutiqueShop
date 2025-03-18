@@ -22,14 +22,14 @@
                 <a href="#services">services</a>
                 <a href="#about">about</a>
                 <a href="#shop">shop</a>
-                <a href="listProduct">My Products</a>
+                <a href="listProduct">All Products</a>
                 <a href="#contact">contact</a>
                 <a href="#blog">blog</a>
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                         <a href="listorder">My Cart</a>
                         <a href="#">My Order</a>
-                        <a href="#">Hello, ${sessionScope.user.name}</a>
+                        <a href="UserProfile.jsp">Hello, ${sessionScope.user.name}</a>
                         <a href="logout">Logout</a>
                     </c:when>
 
@@ -40,11 +40,11 @@
                 </c:choose>          
             </div>
             <div class="icon">
-                <i class="fab fa-facebook"></i>
-                <i class="fab fa-whatsapp"></i>
-                <i class="fab fa-twitter"></i>
-                <i class="fab fa-instagram"></i>
-                <i class="fab fa-gitlab"></i>
+                <a href="myOrder.jsp" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="myOrder.jsp" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="listorder" title="My Order"><i class="fas fa-shopping-cart"></i></a>
+                <a href="UserProfile.jsp" title="My Profile"><i class="fas fa-user"></i></a>
+
                 <div id="menu-bar" class="fa  fa-bars"></div>
             </div>
         </header>
@@ -141,7 +141,7 @@
             <div class="box-container" id="productList">
                 <c:forEach var="product" items="${sessionScope.products}">
                     <div class="box" data-name="${product.name}">
-                        <img src="${product.imageUrl}" alt="${product.getName()}" style="width: 500px; height: 500px; object-fit: cover; border-radius: 5px;">
+                        <a href="productDetail?flowerId=${product.getFlowerId()}"><img src="${product.imageUrl}" alt="${product.getName()}" style="width: 500px; height: 500px; object-fit: cover; border-radius: 5px;"></a>
                         <p class="price">price : <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" groupingUsed="true" /></p>
                         <div class="detail">
                             <h1 class="heading" 
