@@ -19,16 +19,8 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.mssql-jdbc-12.8.1.jre11.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${file.reference.sqljdbc42.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.library-sqljdbc_12.8.1.0_enu}</file>
-                    <path-in-war>WEB-INF/classes</path-in-war>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>

@@ -87,18 +87,18 @@
                                             <tbody>
                                                 <c:forEach items="${product}" var="p">
                                                     <tr>
-                                                        <td>${p.id}</td>
+                                                        <td>${p.flowerId}</td>
                                                         <td>${p.name}</td>
                                                         <td>
-                                                            <img src="${p.image}" alt="${p.name}" width="100" height="100" />
+                                                            <img src="${p.imageUrl}" alt="${p.name}" width="100" height="100" />
                                                         </td>
                                                         <td>${p.price}</td>
                                                         <td>${p.title}</td>
                                                         <td>${p.description}</td>
                                                         <td>${p.category.name}</td>
                                                         <td>
-                                                            <a href="updateProduct?id=${p.id}" class="btn btn-warning">Edit</a>
-                                                            <a href="deleteProduct?id=${p.id}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                                                            <a href="updateProduct?id=${p.flowerId}" class="btn btn-warning">Edit</a>
+                                                            <a href="deleteProduct?id=${p.flowerId}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
