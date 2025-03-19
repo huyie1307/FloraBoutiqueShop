@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 
 @WebServlet(name = "Update", urlPatterns = {"/update"})
 public class UpdateProfile extends HttpServlet {
@@ -22,46 +22,57 @@ public class UpdateProfile extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        int uID = Integer.parseInt(request.getParameter("uID"));
-        String name = request.getParameter("name");
-        String dobStr = request.getParameter("dob");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
+        try {
+            int uID = Integer.parseInt(request.getParameter("uID"));
+            String name = request.getParameter("name");
+            String dobStr = request.getParameter("dob");
+            String phone = request.getParameter("phone");
+            String address = request.getParameter("address");
 
-        // Chuyển đổi ngày sinh từ String sang Date
-        Date dob = null;
-        if (dobStr != null && !dobStr.isEmpty()) {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                dob = sdf.parse(dobStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
+            // Chuyển đổi ngày sinh từ String sang java.sql.Date
+            Date dob = null;
+            if (dobStr != null && !dobStr.isEmpty()) {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    java.util.Date utilDate = sdf.parse(dobStr);
+                    dob = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    request.setAttribute("message", "Lỗi: Định dạng ngày không hợp lệ!");
+                    request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+                    return;
+                }
             }
-        }
 
-        // Tạo đối tượng User với thông tin mới
-        User user = new User();
-        user.setuID(uID);
-        user.setName(name);
-        user.setDob(dob);
-        user.setPhone(phone);
-        user.setAddress(address);
+            // Tạo đối tượng User với thông tin mới
+            User user = new User();
+            user.setuID(uID);
+            user.setName(name);
+            user.setDob(dob);
+            user.setPhone(phone);
+            user.setAddress(address);
 
-        // Gọi UserDAO để cập nhật thông tin người dùng
-        UserDAO userDAO = new UserDAO();
-        boolean isUpdated = userDAO.updateUser(user);
+            // Gọi UserDAO để cập nhật thông tin người dùng
+            UserDAO userDAO = new UserDAO();
+            boolean isUpdated = userDAO.updateUser(user);
 
-        if (isUpdated) {
-            // 🚀 Lấy lại thông tin user từ database sau khi cập nhật
-            User updatedUser = userDAO.getUserById(uID);
-            
-            // 🛠 Cập nhật lại session với thông tin mới
-            HttpSession session = request.getSession();
-            session.setAttribute("user", updatedUser);
+            if (isUpdated) {
+                // 🚀 Lấy lại thông tin user từ database sau khi cập nhật
+                User updatedUser = userDAO.getUserById(uID);
 
-            request.setAttribute("message", "Cập nhật thành công!");
-        } else {
-            request.setAttribute("message", "Cập nhật thất bại!");
+                // 🛠 Cập nhật lại session với thông tin mới
+                HttpSession session = request.getSession();
+                session.setAttribute("user", updatedUser);
+
+                request.setAttribute("message", "Cập nhật thành công!");
+            } else {
+                request.setAttribute("message", "Cập nhật thất bại!");
+            }
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("message", "Lỗi: ID người dùng không hợp lệ!");
+        } catch (Exception e) {
+            request.setAttribute("message", "Lỗi không xác định: " + e.getMessage());
         }
 
         // Chuyển hướng về trang thông tin người dùng
