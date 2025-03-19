@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
+import java.util.Date;
 
 @WebServlet(name = "Update", urlPatterns = {"/update"})
 public class UpdateProfile extends HttpServlet {
