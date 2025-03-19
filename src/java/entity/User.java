@@ -1,6 +1,6 @@
 package entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class User {
 
@@ -29,6 +29,16 @@ public class User {
         this.address = address;
     }
 
+    public User(String username, String password,boolean isSell, boolean isAdmin, String name, Date dob, String phone, String address) {
+        this.username = username;
+        this.password = password;
+        this.isSeller = isSell;
+        this.isAdmin = isAdmin;
+        this.name = name;
+        this.dob = dob;
+        this.phone = phone;
+        this.address = address;
+    }
     public User(int uID, String username) {
         this.uID = uID;
         this.username = username;
