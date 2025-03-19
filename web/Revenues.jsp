@@ -81,7 +81,7 @@ data += entry.getValue() + ",";
             </div>
             <div class="content">
                 <h1>Revenue Management</h1>
-                <h2>Tổng doanh thu: <%= totalRevenue %> VND</h2>
+                <h2>Total Revenue: <%= totalRevenue %> VND</h2>
 
                 <div>
                     <label for="filterType">Chọn loại lọc:</label>
@@ -142,65 +142,70 @@ data += entry.getValue() + ",";
                         }
                     });
 
-                  function updateChart() {
-    const filterType = document.getElementById('filterType').value;
-    const filterDate = document.getElementById('filterDate').value;
+                    document.addEventListener("DOMContentLoaded", function () {
+                        // Lấy ngày hôm nay theo định dạng YYYY-MM-DD
+                        const today = new Date();
+                        const todayStr = today.toISOString().split('T')[0];
 
-    if (!filterDate) {
-        alert("Vui lòng chọn ngày để lọc dữ liệu!");
-        return;
-    }
+                        // Đặt giá trị mặc định cho input date
+                        document.getElementById('filterDate').value = todayStr;
 
-    const filteredData = {};
+                        // Cập nhật biểu đồ ngay khi tải trang
+                        updateChart();
+                    });
 
-    Object.entries(revenueData).forEach(([date, revenue]) => {
-        const d = new Date(date);
-        const filter = new Date(filterDate);
+                    function updateChart() {
+                        const filterType = document.getElementById('filterType').value;
+                        const filterDate = document.getElementById('filterDate').value;
 
-        if (isNaN(d.getTime())) {
-            console.warn("Ngày không hợp lệ:", date);
-            return;
-        }
+                        if (!filterDate) {
+                            alert("Vui lòng chọn ngày để lọc dữ liệu!");
+                            return;
+                        }
 
-        if (filterType === 'day' && d.toISOString().split('T')[0] === filterDate) {
-            filteredData[date] = revenue;
-        } 
-        else if (filterType === 'month' && d.getMonth() === filter.getMonth() && d.getFullYear() === filter.getFullYear()) {
-             const dayKey = `${d.getDate()}`;
-            filteredData[dayKey] = revenue;
-        } 
-        else if (filterType === 'year' && d.getFullYear() === filter.getFullYear()) {
-            // Nhóm doanh thu theo tháng thay vì ngày
-            const monthKey = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2);
+                        const filteredData = {};
 
-            
-            if (!filteredData[monthKey]) {
-                filteredData[monthKey] = 0;
-            }
-            
-            filteredData[monthKey] += revenue; // Cộng dồn doanh thu vào từng tháng
-        }
-    });
+                        Object.entries(revenueData).forEach(([date, revenue]) => {
+                            const d = new Date(date);
+                            const filter = new Date(filterDate);
 
-    if (Object.keys(filteredData).length === 0) {
-        alert("Không có dữ liệu để hiển thị biểu đồ!");
-        return;
-    }
+                            if (isNaN(d.getTime())) {
+                                console.warn("Ngày không hợp lệ:", date);
+                                return;
+                            }
 
-    // Sắp xếp các tháng tăng dần
-    const sortedData = Object.keys(filteredData)
-        .sort((a, b) => new Date(a + '-01') - new Date(b + '-01'))
-        .reduce((acc, key) => {
-            acc[key] = filteredData[key];
-            return acc;
-        }, {});
+                            if (filterType === 'day' && d.toISOString().split('T')[0] === filterDate) {
+                                filteredData[date] = revenue;
+                            } else if (filterType === 'month' && d.getMonth() === filter.getMonth() && d.getFullYear() === filter.getFullYear()) {
+                                const dayKey = `${d.getDate()}`;
+                                filteredData[dayKey] = revenue;
+                            } else if (filterType === 'year' && d.getFullYear() === filter.getFullYear()) {
+                                const monthKey = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2);
+                                if (!filteredData[monthKey]) {
+                                    filteredData[monthKey] = 0;
+                                }
+                                filteredData[monthKey] += revenue;
+                        }
+                        });
 
-    console.log("Sorted Data: ", sortedData);
+                        if (Object.keys(filteredData).length === 0) {
+                            alert("Không có dữ liệu để hiển thị biểu đồ!");
+                            return;
+                        }
 
-    revenueChart.data.labels = Object.keys(sortedData);
-    revenueChart.data.datasets[0].data = Object.values(sortedData);
-    revenueChart.update();
-}
+                        // Sắp xếp dữ liệu theo thời gian
+                        const sortedData = Object.keys(filteredData)
+                                .sort((a, b) => new Date(a + '-01') - new Date(b + '-01'))
+                                .reduce((acc, key) => {
+                                    acc[key] = filteredData[key];
+                                    return acc;
+                                }, {});
+
+                        revenueChart.data.labels = Object.keys(sortedData);
+                        revenueChart.data.datasets[0].data = Object.values(sortedData);
+                        revenueChart.update();
+                    }
+
 
 
                 </script>
