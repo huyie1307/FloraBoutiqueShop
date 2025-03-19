@@ -76,6 +76,22 @@
         <servlet-name>ListProductAdminController</servlet-name>
         <servlet-class>controller.ListProductAdminController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListCustomerController</servlet-name>
+        <servlet-class>controller.ListCustomerController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCustomerController</servlet-name>
+        <servlet-class>controller.UpdateCustomerController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListReviewController</servlet-name>
+        <servlet-class>controller.ListReviewController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReviewDetailController</servlet-name>
+        <servlet-class>controller.ReviewDetailController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -151,5 +167,21 @@
     <servlet-mapping>
         <servlet-name>ListProductAdminController</servlet-name>
         <url-pattern>/adminListProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListCustomerController</servlet-name>
+        <url-pattern>/listCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCustomerController</servlet-name>
+        <url-pattern>/updateCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListReviewController</servlet-name>
+        <url-pattern>/listReview</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReviewDetailController</servlet-name>
+        <url-pattern>/reviewDetail</url-pattern>
     </servlet-mapping>
 </web-app>

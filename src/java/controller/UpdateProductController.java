@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.util.ArrayList;
 import java.util.List;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5) // Giới hạn 5MB
@@ -60,9 +61,6 @@ public class UpdateProductController extends HttpServlet {
                 throw new IllegalArgumentException("Dữ liệu nhập vào không hợp lệ!");
             }
 
-            Category category = new Category();
-            category.setId(categoryId);
-
             Product product = new Product();
             product.setFlowerId(id);
             product.setName(name);
@@ -71,10 +69,12 @@ public class UpdateProductController extends HttpServlet {
             product.setPrice(price);
             product.setImageUrl(image);
 
+            Category category = new Category();
+            category.setId(categoryId);
             product.setCategory(category);
 
             if (productDAO.updateProduct(product)) {
-                response.sendRedirect("listProduct");
+                response.sendRedirect("adminListProduct");
             } else {
                 request.setAttribute("errorMessage", "Cập nhật sản phẩm thất bại!");
                 request.getRequestDispatcher("updateProduct.jsp").forward(request, response);
