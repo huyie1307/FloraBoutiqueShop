@@ -167,4 +167,31 @@ public class UserDAO extends DBContext {
         return users;
     }
 
+    public boolean changePassword(int uID, String currentPassword, String newPassword) {
+        String checkSql = "SELECT password FROM [User] WHERE uID = ?";
+        String updateSql = "UPDATE [User] SET password = ? WHERE uID = ?";
+
+        try (Connection conn = getConnection(); PreparedStatement checkPs = conn.prepareStatement(checkSql); PreparedStatement updatePs = conn.prepareStatement(updateSql)) {
+
+            checkPs.setInt(1, uID);
+            ResultSet rs = checkPs.executeQuery();
+
+            if (rs.next()) {
+                String storedPassword = rs.getString("password");
+                if (!storedPassword.equals(currentPassword)) {
+                    return false; // Mật khẩu hiện tại không đúng
+                }
+            } else {
+                return false; // Không tìm thấy người dùng
+            }
+
+            updatePs.setString(1, newPassword);
+            updatePs.setInt(2, uID);
+            return updatePs.executeUpdate() > 0; // Nếu update thành công, trả về true
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
