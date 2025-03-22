@@ -9,6 +9,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <style>
+            body {
+                background: url('image/userbg.avif') no-repeat center center fixed;
+                background-size: cover;
+            }
             .container-fluid {
                 margin-top: 50px;
             }
@@ -48,6 +52,15 @@
                 background: white;
                 box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
                 border-radius: 10px;
+            }
+            .btn-success {
+                background-color: #d63384;
+                border-color: #d63384;
+            }
+            .btn-success:hover, .btn-success:active, .btn-success:focus {
+                background-color: #b82b6e !important;
+                border-color: #b82b6e !important;
+                box-shadow: none !important;
             }
         </style>
     </head>
