@@ -437,8 +437,9 @@ footer .content .box a{
     display: block;
     text-transform: capitalize;
     font-size: 18px;
-    color: #666;
+    color: black;
 }
+
 footer .content .box a:hover {
     color: var(--main-color);
 }
