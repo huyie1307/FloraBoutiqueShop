@@ -187,9 +187,10 @@
                         <div class="product-card text-center">
                             <img src="${p.getImageUrl()}" alt="${p.getName()}" class="product-image img-fluid">
                             <div class="product-info">
-                                <h5 class="product-name">${p.getName()}</h5>
+                                <h5 class="product-name">
+                                    <a href="productDetail?flowerId=${p.getFlowerId()}">${p.getName()}</a>
+                                </h5>
                                 <p class="product-type">TYPE: ${p.getCategory().getName()}</p>
-                                <p class="product-amount">AMOUNT: ${p.getQuantity()}</p>
                                 <p class="product-price">
                                     <fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" groupingUsed="true" />
                                 </p>

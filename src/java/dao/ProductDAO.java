@@ -8,7 +8,6 @@ import dal.DBContext;
 import java.util.ArrayList;
 import entity.*;
 import java.sql.*;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,7 +19,7 @@ public class ProductDAO extends DBContext {
 
     public ArrayList<Product> listAllProduct() {
         ArrayList<Product> productList = new ArrayList<>();
-        String sql = "select p.pid,p.name,p.image,p.amount,p.price,p.title, p.description, c.cname from Product p\n"
+        String sql = "select p.pid,p.name,p.image,p.price,p.title, p.description, c.cname from Product p\n"
                 + "join Category c on c.cid = p.cateID";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -30,14 +29,13 @@ public class ProductDAO extends DBContext {
                 p.setFlowerId(rs.getInt("pid"));
                 p.setName(rs.getString("name"));
                 p.setImageUrl(rs.getString("image"));
-                p.setQuantity(rs.getInt("amount"));
                 p.setPrice(rs.getDouble("price"));
                 p.setTitle(rs.getString("title"));
                 p.setDescription(rs.getString("description"));
 
-                Category category = new Category();
-                category.setName(rs.getString("cname"));
-                p.setCategory(category);
+                Category c = new Category();
+                c.setName(rs.getString("cname"));
+                p.setCategory(c);
 
                 productList.add(p);
             }
@@ -47,77 +45,66 @@ public class ProductDAO extends DBContext {
         return productList;
     }
 
-    public boolean addProduct(String name, String image, int amount, double price,
-            String title, String description, String categoryName) {
-        String insertProductSQL = "INSERT INTO [dbo].[Product] "
-                + "([name], [image], [amount], [price], [title], [description], [cateID], [sell_ID]) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
-
-        String getCategorySQL = "SELECT cid FROM [dbo].[Category] WHERE cname = ?";
-
+    public boolean addProduct(Product product, int cateID) {
+        String sql = "INSERT INTO [dbo].[Product] ([name], [image], [price], [title], [description], [cateID]) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         try {
-            // Lấy cateID dựa trên tên danh mục
-            PreparedStatement stmtCategory = connection.prepareStatement(getCategorySQL);
-            stmtCategory.setString(1, categoryName);
-            ResultSet rsCategory = stmtCategory.executeQuery();
+            // Chuẩn bị câu lệnh SQL
+            PreparedStatement stmt = connection.prepareStatement(sql);
 
-            if (rsCategory.next()) {
-                int cateID = rsCategory.getInt("cid");
+            // Set giá trị cho câu lệnh SQL
+            stmt.setString(1, product.getName()); // name
+            stmt.setString(2, product.getImageUrl()); // image
+            stmt.setDouble(3, product.getPrice()); // price
+            stmt.setString(4, product.getTitle()); // title
+            stmt.setString(5, product.getDescription()); // description
+            stmt.setInt(6, cateID); // cateID
 
-                // Thêm sản phẩm vào bảng Product
-                PreparedStatement stmtProduct = connection.prepareStatement(insertProductSQL);
-                stmtProduct.setString(1, name);
-                stmtProduct.setString(2, image);
-                stmtProduct.setInt(3, amount);
-                stmtProduct.setDouble(4, price);
-                stmtProduct.setString(5, title);
-                stmtProduct.setString(6, description);
-                stmtProduct.setInt(7, cateID);
-
-                // Thực thi câu lệnh INSERT
-                stmtProduct.executeUpdate();
-                return true;
-            } else {
-                // Nếu không tìm thấy category, ném ngoại lệ
-                throw new SQLException("Category not found: " + categoryName);
-            }
-
-        } catch (SQLException ex) {
-            // Log lỗi hoặc ném ngoại lệ ra ngoài (hoặc có thể thông báo cho người dùng)
-            ex.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean deleteProduct(int productId) {
-        String deleteSQL = "DELETE FROM [Product] WHERE pid = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(deleteSQL);
-            stmt.setInt(1, productId);
+            // Thực thi câu lệnh SQL và kiểm tra kết quả
             int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+            return rowsAffected > 0;  // Trả về true nếu có ít nhất 1 dòng được thêm
         } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "Lỗi khi thêm sản phẩm", ex);
             return false;
         }
     }
 
+    public boolean updateProduct(Product product) {
+        String sql = "UPDATE Product SET name = ?,"
+                + " image = ?, price = ?, "
+                + "title = ?, description = ?, cateID = ? "
+                + "WHERE pid = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, product.getName());
+            stmt.setString(2, product.getImageUrl());
+            stmt.setDouble(3, product.getPrice());
+            stmt.setString(4, product.getTitle());
+            stmt.setString(5, product.getDescription());
+            stmt.setInt(6, product.getCategory().getId());
+            stmt.setInt(7, product.getFlowerId());
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;  // Trả về true nếu có ít nhất một bản ghi được cập nhật
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;  // Trả về false nếu có lỗi xảy ra
+    }
+
+    // Lấy thông tin sản phẩm theo ID
     public Product getProductById(int id) {
-        Product product = null;
-        String sql = "SELECT p.pid, p.name, p.image, p.amount, p.price, p.title, p.description, c.cname "
+        String sql = "SELECT p.pid, p.name, p.image, p.price, p.title, p.description, c.cname "
                 + "FROM Product p "
                 + "JOIN Category c ON c.cid = p.cateID "
                 + "WHERE p.pid = ?";
-        try {
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                product = new Product();
+                Product product = new Product();
                 product.setFlowerId(rs.getInt("pid"));
                 product.setName(rs.getString("name"));
                 product.setImageUrl(rs.getString("image"));
-                product.setQuantity(rs.getInt("amount"));
                 product.setPrice(rs.getDouble("price"));
                 product.setTitle(rs.getString("title"));
                 product.setDescription(rs.getString("description"));
@@ -125,51 +112,12 @@ public class ProductDAO extends DBContext {
                 Category category = new Category();
                 category.setName(rs.getString("cname"));
                 product.setCategory(category);
+
+                return product;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return product;
+        return null;
     }
-
-    public boolean updateProduct(Product product) {
-        String sql = "UPDATE Product SET name = ?, image = ?, amount = ?, price = ?, title = ?, description = ?, cateID = ? "
-                + "WHERE pid = ?";
-        try {
-            // Retrieve the category ID based on the category name
-            String getCategorySQL = "SELECT cid FROM Category WHERE cname = ?";
-            PreparedStatement stmtCategory = connection.prepareStatement(getCategorySQL);
-            ResultSet result = stmtCategory.executeQuery();
-
-            Category category = new Category();
-            category.setId(result.getInt("cid"));
-
-            stmtCategory.setInt(1, category.getId());
-            ResultSet rsCategory = stmtCategory.executeQuery();
-            int cateID = 0;
-            if (rsCategory.next()) {
-                cateID = rsCategory.getInt("cid");
-            } else {
-                throw new SQLException("Category not found: " + product.getCategory());
-            }
-
-            // Update the product
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, product.getName());
-            stm.setString(2, product.getImageUrl());
-            stm.setInt(3, product.getQuantity());
-            stm.setDouble(4, product.getPrice());
-            stm.setString(5, product.getTitle());
-            stm.setString(6, product.getDescription());
-            stm.setInt(7, cateID);
-            stm.setInt(8, product.getFlowerId());
-
-            int rowsAffected = stm.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-    }
-
 }

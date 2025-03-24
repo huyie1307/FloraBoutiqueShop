@@ -22,14 +22,13 @@
                 <a href="#services">services</a>
                 <a href="#about">about</a>
                 <a href="#shop">shop</a>
-                <a href="listProduct">My Products</a>
+                <a href="listProduct">All Products</a>
                 <a href="#contact">contact</a>
                 <a href="#blog">blog</a>
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                         <a href="listorder">My Cart</a>
                         <a href="#">My Order</a>
-                        <a href="#">Hello, ${sessionScope.user.name}</a>
                         <a href="logout">Logout</a>
                     </c:when>
 
@@ -40,11 +39,13 @@
                 </c:choose>          
             </div>
             <div class="icon">
-                <i class="fab fa-facebook"></i>
-                <i class="fab fa-whatsapp"></i>
-                <i class="fab fa-twitter"></i>
-                <i class="fab fa-instagram"></i>
-                <i class="fab fa-gitlab"></i>
+                <a href="myOrder.jsp" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="myOrder.jsp" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="listorder" title="My Order"><i class="fas fa-shopping-cart"></i></a>
+                <a href="UserProfile.jsp" title="My Profile"><i class="fas fa-user"></i></a>
+                <a href="UserProfile.jsp" style="color: #e72463; font-size: 20px; text-align: center; display: block;">
+                    ${sessionScope.user.name}
+                </a>
                 <div id="menu-bar" class="fa  fa-bars"></div>
             </div>
         </header>
@@ -53,7 +54,7 @@
             <div class="detail">
                 <span>top trend</span>
                 <h1>2025 top trend flowers</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat provident labore, fugiat nihil voluptatem consectetur? <br>Nostrum fugit nulla exercitationem officiis ad cumque, illo odio et id numquam porro recusandae laboriosam?</p>
+                <p>Dolor sit amet consectetur adipisicing elit. Placeat provident labore, fugiat nihil voluptatem consectetur? <br>Nostrum fugit nulla exercitationem officiis ad cumque, illo odio et id numquam porro recusandae laboriosam?</p>
                 <a href="#shop" class="btn">shop now</a>
             </div>
         </section>
@@ -141,7 +142,7 @@
             <div class="box-container" id="productList">
                 <c:forEach var="product" items="${sessionScope.products}">
                     <div class="box" data-name="${product.name}">
-                        <img src="${product.imageUrl}" alt="${product.getName()}" style="width: 500px; height: 500px; object-fit: cover; border-radius: 5px;">
+                        <a href="productDetail?flowerId=${product.getFlowerId()}"><img src="${product.imageUrl}" alt="${product.getName()}" style="width: 500px; height: 500px; object-fit: cover; border-radius: 5px;"></a>
                         <p class="price">price : <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" groupingUsed="true" /></p>
                         <div class="detail">
                             <h1 class="heading" 
@@ -289,88 +290,88 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-           $(document).ready(function () {
-               $(".add-to-cart-btn").on("click", function () {
-                   let productId = $(this).data("product-id");
-                   $.ajax({
-                       url: "addToCart",
-                       type: "POST",
-                       data: {pid: productId},
-                       success: function (response) {
-                           response = response.trim();
-                           if (response === "success") {
-                               showNotification("Sản phẩm đã được thêm vào giỏ hàng!", "success");
-                           } else if (response === "not_logged_in") {
-                               window.location.href = "login"; // Chuyển hướng khi chưa đăng nhập
-                           } else {
-                               showNotification("Thêm sản phẩm thất bại!", "error");
-                           }
-                       },
-                       error: function () {
-                           showNotification("Có lỗi xảy ra, vui lòng thử lại.", "error");
-                       }
-                   });
-               });
+                                       $(document).ready(function () {
+                                           $(".add-to-cart-btn").on("click", function () {
+                                               let productId = $(this).data("product-id");
+                                               $.ajax({
+                                                   url: "addToCart",
+                                                   type: "POST",
+                                                   data: {pid: productId},
+                                                   success: function (response) {
+                                                       response = response.trim();
+                                                       if (response === "success") {
+                                                           showNotification("Sản phẩm đã được thêm vào giỏ hàng!", "success");
+                                                       } else if (response === "not_logged_in") {
+                                                           window.location.href = "login"; // Chuyển hướng khi chưa đăng nhập
+                                                       } else {
+                                                           showNotification("Thêm sản phẩm thất bại!", "error");
+                                                       }
+                                                   },
+                                                   error: function () {
+                                                       showNotification("Có lỗi xảy ra, vui lòng thử lại.", "error");
+                                                   }
+                                               });
+                                           });
 
-               // Hàm hiển thị thông báo
-               function showNotification(message, type) {
-                   let bgColor = type === "success" ? "#28a745" : "#dc3545";
-                   let progressColor = type === "success" ? "#ffffff" : "#ff9999";
+                                           // Hàm hiển thị thông báo
+                                           function showNotification(message, type) {
+                                               let bgColor = type === "success" ? "#28a745" : "#dc3545";
+                                               let progressColor = type === "success" ? "#ffffff" : "#ff9999";
 
-                   // Tạo thông báo
-                   let notification = $("<div></div>", {
-                       class: "cart-notification",
-                       text: message,
-                       css: {
-                           "position": "fixed",
-                           "top": "-60px",
-                           "left": "50%",
-                           "transform": "translateX(-50%)",
-                           "padding": "12px 25px",
-                           "background": bgColor,
-                           "color": "white",
-                           "border-radius": "10px",
-                           "z-index": "1000",
-                           "font-weight": "bold",
-                           "box-shadow": "0px 4px 10px rgba(0, 0, 0, 0.2)",
-                           "min-width": "280px",
-                           "text-align": "center",
-                           "opacity": "0",
-                           "transition": "opacity 0.3s ease-in-out, top 0.3s ease-in-out"
-                       }
-                   });
+                                               // Tạo thông báo
+                                               let notification = $("<div></div>", {
+                                                   class: "cart-notification",
+                                                   text: message,
+                                                   css: {
+                                                       "position": "fixed",
+                                                       "top": "-60px",
+                                                       "left": "50%",
+                                                       "transform": "translateX(-50%)",
+                                                       "padding": "12px 25px",
+                                                       "background": bgColor,
+                                                       "color": "white",
+                                                       "border-radius": "10px",
+                                                       "z-index": "1000",
+                                                       "font-weight": "bold",
+                                                       "box-shadow": "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                                                       "min-width": "280px",
+                                                       "text-align": "center",
+                                                       "opacity": "0",
+                                                       "transition": "opacity 0.3s ease-in-out, top 0.3s ease-in-out"
+                                                   }
+                                               });
 
-                   // Thanh trượt
-                   let progressBar = $("<div></div>", {
-                       class: "progress-bar",
-                       css: {
-                           "position": "absolute",
-                           "bottom": "0",
-                           "left": "0",
-                           "height": "4px",
-                           "background": progressColor,
-                           "width": "0%",
-                           "border-radius": "0 0 10px 10px",
-                           "transition": "width 2s linear"
-                       }
-                   });
+                                               // Thanh trượt
+                                               let progressBar = $("<div></div>", {
+                                                   class: "progress-bar",
+                                                   css: {
+                                                       "position": "absolute",
+                                                       "bottom": "0",
+                                                       "left": "0",
+                                                       "height": "4px",
+                                                       "background": progressColor,
+                                                       "width": "0%",
+                                                       "border-radius": "0 0 10px 10px",
+                                                       "transition": "width 2s linear"
+                                                   }
+                                               });
 
-                   notification.append(progressBar);
-                   $("body").append(notification);
+                                               notification.append(progressBar);
+                                               $("body").append(notification);
 
-                   // Hiển thị thông báo
-                   setTimeout(() => {
-                       notification.css({"top": "20px", "opacity": "1"});
-                       progressBar.css("width", "100%");
-                   }, 100);
+                                               // Hiển thị thông báo
+                                               setTimeout(() => {
+                                                   notification.css({"top": "20px", "opacity": "1"});
+                                                   progressBar.css("width", "100%");
+                                               }, 100);
 
-                   // Sau 3 giây, làm mờ dần rồi biến mất
-                   setTimeout(() => {
-                       notification.css({"opacity": "0", "top": "-60px"});
-                       setTimeout(() => notification.remove(), 200);
-                   }, 2000);
-               }
-           });
+                                               // Sau 3 giây, làm mờ dần rồi biến mất
+                                               setTimeout(() => {
+                                                   notification.css({"opacity": "0", "top": "-60px"});
+                                                   setTimeout(() => notification.remove(), 200);
+                                               }, 2000);
+                                           }
+                                       });
     </script>
 
 </html>
