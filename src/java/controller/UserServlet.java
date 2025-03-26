@@ -1,6 +1,6 @@
 package controller;
-import dal.User;
-import DAO.UserDao;
+import entity.User;
+import dao.UserDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserServlet extends HttpServlet {
 
-    private final UserDao userDAO = new UserDao();
+    private final UserDAO userDAO = new UserDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
