@@ -54,7 +54,7 @@
             <div class="detail">
                 <span>top trend</span>
                 <h1>2025 top trend flowers</h1>
-                <p>Dolor sit amet consectetur adipisicing elit. Placeat provident labore, fugiat nihil voluptatem consectetur? <br>Nostrum fugit nulla exercitationem officiis ad cumque, illo odio et id numquam porro recusandae laboriosam?</p>
+                <p>Discover the exquisite beauty of the top trending flowers of 2025. From vibrant colors to enchanting fragrances, each bloom tells an inspiring story. <br>Let nature enhance your space with the perfect selection!</p>
                 <a href="#shop" class="btn">shop now</a>
             </div>
         </section>
@@ -121,23 +121,26 @@
         <div class="about" id="about">
             <div class="row">
                 <div class="box">
-                    <img src="image/about.jpg" alt="" class="img">
-                    <img src="image/blog.avif" alt="">
+                    <img src="image/why.jpg" alt="" class="img">
+                    <img src="image/chooseus.jpg" alt="img">
                 </div>
                 <div class="content">
-                    <span>why choose us</span>
-                    <h3>take a look around our shop</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos sint ea fuga blanditiis eum aliquid commodi ab labore exercitationem numquam, odit, obcaecati nisi voluptatem. Accusantium eius quisquam quasi in quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae tenetur optio et eius ut? Consequuntur, praesentium nemo at, nisi odit repellendus culpa dignissimos voluptate recusandae molestias possimus voluptatum ex? Sunt! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur modi magnam nulla. Tenetur animi deleniti ea atque voluptate earum in delectus, quae consequatur nostrum ad, laboriosam tempore aspernatur possimus minus?</p>
+                    <h3>Why choose us</h3>
+                    <p>Why choose Flora Boutique flower shop
+                        It is not difficult for you to find a flower shop that provides online flower ordering service. So why should you use the flower service of Flora Boutique flower shop?
+                        Beautiful flowers, diverse designs suitable for all events.
+                        Design according to customer requirements.
+                        Professional florists with many years of experience.</p>
                     <div class="buttons">
                         <a href="#shop" class="btn">shop now</a>
-                        <a href="#shop" class="btn">learn more</a>
+                        <a href="#blog" class="btn">learn more</a>
                     </div>
                 </div>
             </div>
         </div>
         <!-- shop section start -->
         <div class="shop" id="shop">
-            <h1 class="heading">our best products</h1>
+            <h1 class="heading">Our Best Products</h1>
 
             <div class="box-container" id="productList">
                 <c:forEach var="product" items="${sessionScope.products}">
@@ -169,7 +172,6 @@
         <section class="contact" id="contact">
             <form action="">
                 <div class="heading">
-                    <span>any query</span>
                     <h1>contact us</h1>
                 </div>
                 <div class="input-field">
@@ -193,42 +195,40 @@
         </section>
         <section class="blog" id="blog">
             <h1 class="heading">our blog</h1>
-            <p style="text-align: center; font-size: 1.5rem;">A collection of stories about the people and
-                places we admire.</p>
             <div class="box-container">
                 <div class="box">
-                    <p class="date">june 20, 2023</p>
+                    <p class="date">March 3, 2025</p>
                     <div class="img-box">
-                        <img src="image/blog2.avif" alt="">
+                        <img src="image/blog1ye.jpg" alt="">
                     </div>
                     <div class="detail">
-                        <h1>The Standard Chunk Of Lorem Ipsum Used Since</h1>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam eveniet optio commodi sit fugiat quaerat quam, vero aut beatae porro accusantium molestiae consequatur necessitatibus amet sapiente accusamus cumque adipisci repellendus.</p>
-                        <a href="" class="btn">read more</a>
+                        <h1>Welcome to Flora Boutique – Your Floral Haven</h1>
+                        <p>Flowers are not just gifts; they convey emotions, love, and appreciation. At Flora Boutique, we specialize in crafting flower arrangements that leave lasting impressions.Our floral designs add meaning to every occasion.</p>
+                        <a href="Blog.jsp" class="btn">read more</a>
                     </div>
 
                 </div>
                 <div class="box">
-                    <p class="date">june 20, 2023</p>
+                    <p class="date">March 3, 2025</p>
                     <div class="img-box">
-                        <img src="image/blog0.avif" alt="">
+                        <img src="image/blog2ye.jpg" alt="">
                     </div>
                     <div class="detail">
-                        <h1>The Standard Chunk Of Lorem Ipsum Used Since</h1>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam eveniet optio commodi sit fugiat quaerat quam, vero aut beatae porro accusantium molestiae consequatur necessitatibus amet sapiente accusamus cumque adipisci repellendus.</p>
-                        <a href="" class="btn">read more</a>
+                        <h1>How to Choose the Right Flowers for Every Occasion</h1>
+                        <p>Flowers bring life and beauty to any space. At Flora Boutique, we offer exquisite floral decorations that enhance your home or office. Discover how our creative arrangements can transform your environment and elevate your mood.</p>
+                        <a href="Blog.jsp" class="btn">read more</a>
                     </div>
 
                 </div>
                 <div class="box">
-                    <p class="date">june 20, 2023</p>
+                    <p class="date">March 3, 2023</p>
                     <div class="img-box">
-                        <img src="image/blog.avif" alt="">
+                        <img src="image/blog3ye.png" alt="">
                     </div>
                     <div class="detail">
-                        <h1>The Standard Chunk Of Lorem Ipsum Used Since</h1>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam eveniet optio commodi sit fugiat quaerat quam, vero aut beatae porro accusantium molestiae consequatur necessitatibus amet sapiente accusamus cumque adipisci repellendus.</p>
-                        <a href="" class="btn">read more</a>
+                        <h1>The Meaning Behind Popular Flowers</h1>
+                        <p>Your wedding day deserves breathtaking floral arrangements. At Flora Boutique, we create wedding bouquets and floral decorations that complement your theme and style, ensuring a picture-perfect celebration filled with beauty and romance.</p>
+                        <a href="Blog.jsp" class="btn">read more</a>
                     </div>
 
                 </div>
@@ -249,40 +249,47 @@
                 </div>
                 <div class="box">
                     <h3>help & information</h3>
-                    <a href="">help center</a>
-                    <a href="">address store</a>
+                    <a href="#contact">help center</a>
+                    <a href="https://maps.app.goo.gl/dQKj8Koxeycmwvrw7">address store</a>
                     <a href="">privacy policy</a>
-                    <a href="">reveiver</a>
-                    <a href="">our store</a>
+                    <a href="myProduct.jsp">our store</a>
                 </div>
                 <div class="box">
                     <h3>about us</h3>
-                    <a href="">contact us</a>
-                    <a href="">about us</a>
-                    <a href="">terms & condition</a>
-                    <a href="">event</a>
-                    <a href="">our shop</a>
+                    <a href="#contact">contact us</a>
+                    <a href="#about">about us</a>
+                    <a href="#shop">best sellers</a>
+                    <a href="myProduct.jsp">our shop</a>
                 </div>
                 <div class="box">
                     <h3>get in touch</h3>
-                    <p>Phone : +91-2233445544</p>
-                    <p>E-mail : selenaAnsari@gmaill.com</p>
-                    <p>Location : South America, USA</p>
+                    <p>Phone : +84-974xxxxxx</p>
+                    <p>E-mail : floraboutiqueshop@gmaill.com</p>
+                    <p>Location : FPT University, Hola</p>
                     <div class="icon">
                         <i class="fab fa-facebook"></i>
-                        <i class="fab fa-whatsapp"></i>
-                        <i class="fab fa-twitter"></i>
                         <i class="fab fa-instagram"></i>
-                        <i class="fab fa-gitlab"></i>
                         <div id="menu-bar" class="fa  fa-bars"></div>
                     </div>
                 </div>
             </div>
             <div class="bottom">
-                <p>copyright @ 2023 <span>code with selena.</span>All Rights Reserved</p>
+                <p>Copyright©2025 <span>Flora Boutique Shop.</span></p>
             </div>
         </footer>
-
+        <style>
+            /* Đổi màu chữ trong footer và blog thành đen */
+            footer .content p,
+            footer .content a,
+            footer .bottom p,
+            .blog p {
+                color: black !important;
+            }   /* Giữ màu tiêu đề của footer và blog không bị ảnh hưởng */
+            footer .content h3,
+            .blog .heading {
+                color: inherit; /* Hoặc đặt màu mong muốn */
+            }
+        </style>
 
     </body>
 
@@ -296,22 +303,29 @@
                                                $.ajax({
                                                    url: "addToCart",
                                                    type: "POST",
-                                                   data: {pid: productId},
+                                                   data: {
+                                                       pid: productId
+                                                   }
+                                                   ,
                                                    success: function (response) {
                                                        response = response.trim();
                                                        if (response === "success") {
                                                            showNotification("Sản phẩm đã được thêm vào giỏ hàng!", "success");
                                                        } else if (response === "not_logged_in") {
-                                                           window.location.href = "login"; // Chuyển hướng khi chưa đăng nhập
+                                                           window.location.href = "login";
+                                                           // Chuyển hướng khi chưa đăng nhập
                                                        } else {
                                                            showNotification("Thêm sản phẩm thất bại!", "error");
                                                        }
-                                                   },
+                                                   }
+                                                   ,
                                                    error: function () {
                                                        showNotification("Có lỗi xảy ra, vui lòng thử lại.", "error");
                                                    }
-                                               });
-                                           });
+                                               }
+                                               );
+                                           }
+                                           );
 
                                            // Hàm hiển thị thông báo
                                            function showNotification(message, type) {
@@ -339,7 +353,8 @@
                                                        "opacity": "0",
                                                        "transition": "opacity 0.3s ease-in-out, top 0.3s ease-in-out"
                                                    }
-                                               });
+                                               }
+                                               );
 
                                                // Thanh trượt
                                                let progressBar = $("<div></div>", {
@@ -354,24 +369,34 @@
                                                        "border-radius": "0 0 10px 10px",
                                                        "transition": "width 2s linear"
                                                    }
-                                               });
+                                               }
+                                               );
 
                                                notification.append(progressBar);
                                                $("body").append(notification);
 
                                                // Hiển thị thông báo
                                                setTimeout(() => {
-                                                   notification.css({"top": "20px", "opacity": "1"});
+                                                   notification.css({
+                                                       "top": "20px", "opacity": "1"
+                                                   }
+                                                   );
                                                    progressBar.css("width", "100%");
-                                               }, 100);
+                                               }
+                                               , 100);
 
                                                // Sau 3 giây, làm mờ dần rồi biến mất
                                                setTimeout(() => {
-                                                   notification.css({"opacity": "0", "top": "-60px"});
+                                                   notification.css({
+                                                       "opacity": "0", "top": "-60px"
+                                                   }
+                                                   );
                                                    setTimeout(() => notification.remove(), 200);
-                                               }, 2000);
+                                               }
+                                               , 2000);
                                            }
-                                       });
+                                       }
+                                       );
     </script>
 
 </html>
