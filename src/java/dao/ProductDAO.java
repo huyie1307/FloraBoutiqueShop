@@ -120,4 +120,23 @@ public class ProductDAO extends DBContext {
         }
         return null;
     }
+
+    public boolean deleteProduct(int productId) {
+        String sql = "DELETE FROM Product WHERE pid = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            // Set parameter for productId
+            stmt.setInt(1, productId);
+
+            // Thực thi câu lệnh DELETE
+            int rowsAffected = stmt.executeUpdate();
+
+            // Nếu ít nhất một hàng bị ảnh hưởng, trả về true (xóa thành công)
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Nếu có lỗi xảy ra, trả về false (xóa không thành công)
+            return false;
+        }
+    }
 }

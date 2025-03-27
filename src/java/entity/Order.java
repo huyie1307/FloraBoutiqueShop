@@ -1,7 +1,9 @@
 package entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+
 
 public class Order {
 
@@ -16,7 +18,8 @@ public class Order {
     private LocalDateTime completeDate;
     private PaymentMethod method;
     private String note;
-
+    private ArrayList<Product> product;
+    private OrderStatus orderStatus;
     public Order() {
     }
 
@@ -45,6 +48,14 @@ public class Order {
         this.completeDate = completeDate;
         this.method = method;
         this.note = note;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
     
     public String getId() {
@@ -133,6 +144,14 @@ public class Order {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public ArrayList<Product> getProduct() {
+        return product;
+    }
+
+    public void setProduct(ArrayList<Product> product) {
+        this.product = product;
     }
 
     @Override

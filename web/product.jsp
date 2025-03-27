@@ -1,5 +1,5 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +41,7 @@
                                         <th>Title</th>
                                         <th>Description</th>
                                         <th>Category</th>
+                                        <th>Actions</th> <!-- Added Actions Column -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,6 +54,10 @@
                                             <td>${p.title}</td>
                                             <td>${p.description}</td>
                                             <td>${p.category.name}</td>
+                                            <td>
+                                                <!-- Delete Button -->
+                                                <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.flowerId})">Delete</button>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
@@ -117,6 +122,14 @@
                 buttons: ['copy', 'print']
             });
         });
+
+        // JavaScript function to delete a product
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                // Call servlet or API to delete the product
+                window.location.href = "deleteProduct?id=" + productId;  // Redirect to deleteProduct servlet
+            }
+        }
     </script>
 
 </body>

@@ -53,7 +53,7 @@ public class DeleteProductController extends HttpServlet {
             // Kiểm tra nếu xóa thành công
             if (isDeleted) {
                 // Nếu xóa thành công, chuyển hướng về trang listProduct.jsp
-                response.sendRedirect("listProduct");
+                response.sendRedirect("adminListProduct");
             } else {
                 // Nếu xóa thất bại, hiển thị thông báo lỗi
                 request.setAttribute("errorMessage", "Không thể xóa sản phẩm!");

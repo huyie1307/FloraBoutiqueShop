@@ -2,9 +2,15 @@ package dao;
 
 import dal.DBContext;
 import entity.Category;
+import entity.Order;
+import entity.OrderDetail;
+import entity.OrderStatus;
+import entity.PaymentMethod;
 
 import entity.Product;
+import entity.Review;
 import entity.User;
+import java.io.ObjectInputFilter.Status;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -84,12 +90,12 @@ public class CustomerDAO extends DBContext {
 
     public ArrayList<Product> getProductsByUserId(int userId) {
         ArrayList<Product> products = new ArrayList<>();
-        String query = "SELECT p.pid, p.name, p.image, p.price, p.title, p.description, c.cid, c.cname " +
-                       "FROM [Order] o " +
-                       "JOIN OrderDetail od ON o.orderID = od.orderID " +
-                       "JOIN Product p ON od.productID = p.pid " +
-                       "JOIN Category c ON p.cateID = c.cid " +
-                       "WHERE o.userID = ?";
+        String query = "SELECT p.pid, p.name, p.image, p.price, p.title, p.description, c.cid, c.cname "
+                + "FROM [Order] o "
+                + "JOIN OrderDetail od ON o.orderID = od.orderID "
+                + "JOIN Product p ON od.productID = p.pid "
+                + "JOIN Category c ON p.cateID = c.cid "
+                + "WHERE o.userID = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, userId);
@@ -119,4 +125,70 @@ public class CustomerDAO extends DBContext {
         }
         return products;
     }
+
+     public ArrayList<OrderDetail> getOrderDetailsByUserId(int userID) throws SQLException {
+        ArrayList<OrderDetail> orderDetails = new ArrayList<>();
+        String query = "SELECT " +
+                       "p.name AS product_name, " +
+                       "p.price AS product_price, " +
+                       "p.description AS product_description, " +
+                       "od.quantity AS product_quantity, " +
+                       "o.totalPrice AS total_order_price, " +
+                       "pm.methodName AS payment_method, " +
+                       "o.orderID, " +
+                       "od.id AS detailID, " +
+                       "r.id AS reviewID " +
+                       "FROM [Order] o " +
+                       "JOIN OrderDetail od ON o.orderID = od.orderID " +
+                       "JOIN Product p ON od.productID = p.pid " +
+                       "JOIN PaymentMethod pm ON o.paymentMethodID = pm.paymentMethodID " +
+                       "LEFT JOIN Review r ON od.reviewID = r.id " +
+                       "WHERE o.userID = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userID);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // Lấy thông tin từ ResultSet và tạo đối tượng Product, Review và Order
+                Product product = new Product();
+                product.setName(rs.getString("product_name"));
+                product.setPrice(rs.getDouble("product_price"));
+                product.setDescription(rs.getString("product_description"));
+
+                Review review = new Review();
+                review.setId(rs.getInt("reviewID"));
+
+                Order order = new Order();
+                order.setId(rs.getString("orderID"));
+
+                // Tạo đối tượng OrderDetail và gán các giá trị
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setId(rs.getInt("detailID"));
+                orderDetail.setOrder(order);
+                orderDetail.setProduct(product);
+                orderDetail.setReview(review);
+                orderDetail.setQuantity(rs.getInt("product_quantity"));
+                orderDetail.setPrice(rs.getDouble("product_price"));
+
+                orderDetails.add(orderDetail);
+            }
+        }
+        return orderDetails;
+    }
+
+// Cập nhật phương thức lấy tên phương thức thanh toán
+    private String getPaymentMethodName(int methodId) {
+        String query = "SELECT name FROM PaymentMethod WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, methodId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
