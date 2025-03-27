@@ -42,9 +42,9 @@
             <a href="admin?action=orders">📦 Orders</a>
             <a href="admin?action=revenue">📈 Revenue</a>
             <a href="admin?action=cus">👤 Users</a>
-            <a href="admin?action=adminListProduct">🛒 List Products</a> <!-- Liên kết tới trang quản lý sản phẩm -->
-            <a href="admin?action=listCustomer">👥 List Customers</a> <!-- Liên kết tới trang quản lý khách hàng -->
-            <a href="admin?action=listReview">⭐ List Reviews</a> 
+            <a href="adminListProduct">🛒 List Products</a> <!-- Liên kết tới trang quản lý sản phẩm -->
+            <a href="listCustomer">👥 List Customers</a> <!-- Liên kết tới trang quản lý khách hàng -->
+            <a href="listReview">⭐ List Reviews</a> 
         </div>
     </body>
 </html>
