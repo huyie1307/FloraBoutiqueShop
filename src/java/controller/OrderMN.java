@@ -61,7 +61,7 @@ public class OrderMN extends HttpServlet {
         OrderDAO dao = new OrderDAO();
         List<OrderMG> orders = dao.getAllOrders();
         request.setAttribute("orders", orders);
-        request.getRequestDispatcher("Order.jsp").forward(request, response);
+        request.getRequestDispatcher("OrderManagement.jsp").forward(request, response);
     }
 
     /**
