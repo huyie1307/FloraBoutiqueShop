@@ -41,13 +41,13 @@
                                         <th>Title</th>
                                         <th>Description</th>
                                         <th>Category</th>
-                                        <th>Actions</th> <!-- Added Actions Column -->
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="${product}" var="p">
-                                        <tr>
-                                            <td>${p.flowerId}</td>
+                                    <c:forEach items="${product}" var="p" varStatus="status">
+                                        <tr class="${p.isDelete ? 'table-secondary' : ''}">
+                                            <td>${status.index + 1}</td>
                                             <td><a href="updateProduct?id=${p.flowerId}" class="text-decoration-none">${p.name}</a></td>
                                             <td><img src="${p.imageUrl}" alt="${p.name}" width="100" height="100" /></td>
                                             <td>${p.price}</td>
@@ -55,8 +55,25 @@
                                             <td>${p.description}</td>
                                             <td>${p.category.name}</td>
                                             <td>
-                                                <!-- Delete Button -->
-                                                <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.flowerId})">Delete</button>
+                                                <!-- Toggle Visibility Button -->
+                                                <c:choose>
+                                                    <c:when test="${p.isDelete}">
+                                                        <!-- Product is hidden → show Restore -->
+                                                        <form action="updateProductStatus" method="post" style="display:inline;">
+                                                            <input type="hidden" name="pid" value="${p.flowerId}" />
+                                                            <input type="hidden" name="status" value="false" />
+                                                            <button type="submit" class="btn btn-success btn-sm">Khôi phục</button>
+                                                        </form>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <!-- Product is active → show Hide -->
+                                                        <form action="updateProductStatus" method="post" style="display:inline;">
+                                                            <input type="hidden" name="pid" value="${p.flowerId}" />
+                                                            <input type="hidden" name="status" value="true" />
+                                                            <button type="submit" class="btn btn-warning btn-sm">Ẩn</button>
+                                                        </form>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -114,7 +131,7 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <script>
-        // Initialize DataTable for pagination, search, and sorting
+        // Initialize DataTable
         $(document).ready(function() {
             $('#productTable').DataTable({
                 responsive: true,
@@ -122,16 +139,7 @@
                 buttons: ['copy', 'print']
             });
         });
-
-        // JavaScript function to delete a product
-        function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                // Call servlet or API to delete the product
-                window.location.href = "deleteProduct?id=" + productId;  // Redirect to deleteProduct servlet
-            }
-        }
     </script>
-
 </body>
 
 </html>

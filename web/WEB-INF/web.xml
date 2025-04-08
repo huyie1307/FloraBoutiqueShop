@@ -100,6 +100,10 @@
         <servlet-name>OrderMN</servlet-name>
         <servlet-class>controller.OrderMN</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateProductStatusController</servlet-name>
+        <servlet-class>controller.UpdateProductStatusController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -199,5 +203,9 @@
     <servlet-mapping>
         <servlet-name>OrderMN</servlet-name>
         <url-pattern>/orderMN</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProductStatusController</servlet-name>
+        <url-pattern>/updateProductStatus</url-pattern>
     </servlet-mapping>
 </web-app>

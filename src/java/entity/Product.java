@@ -10,6 +10,7 @@ public class Product {
     private String imageUrl;
     private String title;
     private String description;
+    private boolean isDelete;
 
     public Product() {
 
@@ -99,6 +100,15 @@ public class Product {
         this.description = description;
     }
 
+    public boolean isIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(boolean isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    
     @Override
     public String toString() {
         return "Product{" + "flowerId=" + flowerId + ", name=" + name + ", category=" + category + ", quantity=" + quantity + ", price=" + price + ", imageUrl=" + imageUrl + ", title=" + title + ", description=" + description + '}';

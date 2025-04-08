@@ -34,7 +34,7 @@ public class ListProductController extends HttpServlet {
         HttpSession session = request.getSession();
 
         ProductDAO productDAO = new ProductDAO();
-        ArrayList<Product> products = productDAO.listAllProduct();
+        ArrayList<Product> products = productDAO.getVisibleProduct();
         session.setAttribute("products", products);
         request.getRequestDispatcher("myProduct.jsp").forward(request, response);
     }

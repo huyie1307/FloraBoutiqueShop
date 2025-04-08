@@ -4,18 +4,19 @@ import dao.CategoryDAO;
 import dao.ProductDAO;
 import entity.Category;
 import entity.Product;
+
 import java.io.IOException;
 import java.io.File;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5) // Giới hạn 5MB
 public class AddProductController extends HttpServlet {
@@ -42,13 +43,14 @@ public class AddProductController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            // Lấy dữ liệu từ form
             String name = request.getParameter("name").trim();
             String title = request.getParameter("title").trim();
             String description = request.getParameter("description").trim();
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
             double price = Double.parseDouble(request.getParameter("price"));
 
-            // Lấy tên danh mục theo ID
+            // Kiểm tra danh mục có tồn tại không
             String categoryName = categoryDAO.getCategoryNameById(categoryId);
             if (categoryName == null) {
                 request.setAttribute("errorMessage", "Danh mục không tồn tại!");
@@ -56,12 +58,12 @@ public class AddProductController extends HttpServlet {
                 return;
             }
 
-            // Tạo đối tượng Category từ ID và tên
+            // Tạo đối tượng Category
             Category category = new Category();
             category.setId(categoryId);
             category.setName(categoryName);
 
-            // Xử lý upload ảnh
+            // Xử lý ảnh upload
             String image = uploadImage(request.getPart("image"));
 
             // Tạo đối tượng Product
@@ -73,8 +75,10 @@ public class AddProductController extends HttpServlet {
             product.setImageUrl(image);
             product.setCategory(category);
 
-            // Thêm sản phẩm vào database
-            if (productDAO.addProduct(product, category.getId())) {
+            // Gọi DAO để thêm sản phẩm (mặc định amount = null, isDelete = 0)
+            boolean isAdded = productDAO.addProduct(product, categoryId);
+
+            if (isAdded) {
                 response.sendRedirect("adminListProduct");
             } else {
                 request.setAttribute("errorMessage", "Thêm sản phẩm thất bại!");
