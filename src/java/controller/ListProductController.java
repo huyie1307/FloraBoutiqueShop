@@ -50,15 +50,7 @@ public class ListProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO proDb = new ProductDAO();
-        CategoryDAO cateDb = new CategoryDAO();
-        
-        ArrayList<Product> productList = proDb.listAllProduct();
-        ArrayList<Category> categoryList = cateDb.getAllCategories();
-
-        request.setAttribute("product", productList);
-        request.setAttribute("category", categoryList);
-        request.getRequestDispatcher("product.jsp").forward(request, response);
+     
     }
 
 }

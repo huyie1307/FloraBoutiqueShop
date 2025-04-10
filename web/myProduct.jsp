@@ -182,7 +182,7 @@
         <!-- Bảng danh sách sản phẩm -->
         <div class="container mt-4">
             <div class="row">
-                <c:forEach var="p" items="${sessionScope.products}">
+                <c:forEach var="p" items="${products}">
                     <div class="col-lg-2 col-md-3 col-sm-6 mb-3 product-item">
                         <div class="product-card text-center">
                             <img src="${p.getImageUrl()}" alt="${p.getName()}" class="product-image img-fluid">

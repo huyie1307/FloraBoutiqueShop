@@ -41,10 +41,6 @@
         <servlet-class>controller.AdminController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DeleteProductController</servlet-name>
-        <servlet-class>controller.DeleteProductController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ListOrderServlet</servlet-name>
         <servlet-class>controller.ListOrderServlet</servlet-class>
     </servlet>
@@ -143,10 +139,6 @@
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/AdminController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteProductController</servlet-name>
-        <url-pattern>/deleteProduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ListOrderServlet</servlet-name>
