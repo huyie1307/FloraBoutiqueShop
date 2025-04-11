@@ -64,7 +64,7 @@ public class AdminController extends HttpServlet {
 
         switch (action) {
             case "orders":
-                page = "order"; // Chỉ forward nội dung, không load toàn trang
+                page = "orderMN"; // Chỉ forward nội dung, không load toàn trang
                 break;
             case "revenue":
                 page = "rev";
