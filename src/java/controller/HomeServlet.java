@@ -22,7 +22,7 @@ public class HomeServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         ProductDAO productDAO = new ProductDAO();
-        ArrayList<Product> products = productDAO.listAllProduct();
+        ArrayList<Product> products = productDAO.getVisibleProduct();
 
         session.setAttribute("products", products);
         request.getRequestDispatcher("home.jsp").forward(request, response);

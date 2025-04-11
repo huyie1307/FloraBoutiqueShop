@@ -51,7 +51,8 @@ public class ProductDAO extends DBContext {
         ArrayList<Product> productList = new ArrayList<>();
         String sql = "SELECT p.pid, p.name, p.image, p.price, p.title, p.description, c.cname, p.isDelete "
                 + "FROM Product p JOIN Category c ON c.cid = p.cateID "
-                + "WHERE p.isDelete = 0";;
+                + "WHERE p.isDelete = 0"
+                + "ORDER BY p.pid DESC";;
         try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Product p = new Product();
