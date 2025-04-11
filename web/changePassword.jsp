@@ -75,6 +75,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="change-password.jsp">Đổi mật khẩu</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout">Đăng xuất</a>
+                </li>
             </ul>
         </div>
         <div class="content-container">
