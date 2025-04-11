@@ -34,7 +34,7 @@ public class ListProductController extends HttpServlet {
         HttpSession session = request.getSession();
 
         ProductDAO productDAO = new ProductDAO();
-        ArrayList<Product> products = productDAO.listAllProduct();
+        ArrayList<Product> products = productDAO.getVisibleProduct();
         session.setAttribute("products", products);
         request.getRequestDispatcher("myProduct.jsp").forward(request, response);
     }
@@ -50,15 +50,7 @@ public class ListProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO proDb = new ProductDAO();
-        CategoryDAO cateDb = new CategoryDAO();
-        
-        ArrayList<Product> productList = proDb.listAllProduct();
-        ArrayList<Category> categoryList = cateDb.getAllCategories();
-
-        request.setAttribute("product", productList);
-        request.setAttribute("category", categoryList);
-        request.getRequestDispatcher("product.jsp").forward(request, response);
+     
     }
 
 }

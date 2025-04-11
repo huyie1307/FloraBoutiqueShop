@@ -70,7 +70,7 @@
 <body>
     <%@ include file="Admin.jsp" %>
     <div class="container">
-        <h2>Danh sách Người Dùng</h2>
+        <h2>Use List</h2>
 
         <div class="search-container">
             <form action="user" method="GET">

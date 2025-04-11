@@ -3,7 +3,9 @@ package dao;
 import dal.DBContext;
 import entity.Category;
 import entity.Order;
+import entity.OrderMG;
 import entity.OrderDetail;
+import entity.OrderStatus;
 import entity.PaymentMethod;
 import entity.Product;
 import entity.Status;
@@ -11,7 +13,9 @@ import entity.User;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderDAO extends DBContext {
 
@@ -214,4 +218,153 @@ public class OrderDAO extends DBContext {
         return total;
     }
 
+    public Map<String, Integer> getRevenueByDate(String filter) {
+        Map<String, Integer> revenueData = new HashMap<>();
+        String sql = "";
+        switch (filter) {
+            case "day":
+                sql = "SELECT CONVERT(VARCHAR(10), orderDate, 120) AS [Date], SUM(totalPrice) AS Revenue "
+                        + "FROM [Order] WHERE statusID = 3 GROUP BY CONVERT(VARCHAR(10), orderDate, 120) ORDER BY [Date]";
+                break;
+            case "month":
+                sql = "SELECT FORMAT(orderDate, 'yyyy-MM') AS [Month], SUM(totalPrice) AS Revenue "
+                        + "FROM [Order] WHERE statusID = 3 GROUP BY FORMAT(orderDate, 'yyyy-MM') ORDER BY [Month]";
+                break;
+            case "year":
+                sql = "SELECT YEAR(orderDate) AS [Year], SUM(totalPrice) AS Revenue "
+                        + "FROM [Order] WHERE statusID = 3 GROUP BY YEAR(orderDate) ORDER BY [Year]";
+                break;
+            default:
+                return revenueData;
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                revenueData.put(rs.getString(1), rs.getInt(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return revenueData;
+    }
+
+    public int getTotalRevenue() {
+        String sql = "SELECT SUM(totalPrice) FROM [Order]";
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void updateStatus(int orderID, int statusID) throws Exception {
+        String query = "UPDATE [Order] SET statusID = ? WHERE orderID = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, statusID);
+            ps.setInt(2, orderID);
+            ps.executeUpdate();
+        }
+    }
+
+    public void updateOrderStatus(int orderID, int statusID) {
+        String sql = "UPDATE [Order] SET statusID = ? WHERE orderID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, statusID);
+            ps.setInt(2, orderID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<OrderMG> getAllOrders() {
+        List<OrderMG> orders = new ArrayList<>();
+        String sql = "SELECT * FROM [Order]";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                OrderMG order = new OrderMG(
+                        rs.getInt("orderID"),
+                        rs.getInt("userID"),
+                        rs.getInt("statusID"),
+                        rs.getBigDecimal("totalPrice"),
+                        rs.getTimestamp("orderDate"),
+                        rs.getInt("paymentMethodID"),
+                        (Integer) rs.getObject("discountCodeID"),
+                        rs.getString("note")
+                );
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+    // Lấy doanh thu theo từng sản phẩm
+    public Map<String, Integer> getRevenueByProduct() {
+        Map<String, Integer> revenueData = new HashMap<>();
+        String query = "SELECT p.name, SUM(od.quantity * od.price) AS totalRevenue "
+                + "FROM OrderDetail od "
+                + "JOIN Product p ON od.pid = p.pid "
+                + "GROUP BY p.name";
+
+        try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                revenueData.put(rs.getString("name"), rs.getInt("totalRevenue"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return revenueData;
+    }
+
+    public ArrayList<Order> getCustomerOrders(int userId) {
+        ArrayList<Order> orders = new ArrayList<>();
+        String sql = "SELECT o.orderID,u.name, o.orderDate, o.totalPrice, os.statusName as status,\n"
+                + "               pm.methodName as paymentMethod \n"
+                + "               FROM [Order] o \n"
+                + "			   join [User] u on o.userID = u.uID\n"
+                + "               JOIN OrderStatus os ON o.statusID = os.statusID \n"
+                + "               JOIN PaymentMethod pm ON o.paymentMethodID = pm.paymentMethodID \n"
+                + "               WHERE o.userID = ? \n"
+                + "               ORDER BY o.orderDate DESC";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getString("orderID"));
+                order.setOrderDate(rs.getTimestamp("orderDate"));
+                order.setTotal(rs.getDouble("totalPrice"));
+                
+                User user = new User();
+                user.setName(rs.getString("name"));
+                order.setUser(user);
+
+                OrderStatus status = new OrderStatus();
+                status.setStatusName(rs.getString("status"));
+                order.setOrderStatus(status);
+
+                PaymentMethod paymentMethod = new PaymentMethod();
+                paymentMethod.setName(rs.getString("paymentMethod"));
+                order.setMethod(paymentMethod);
+
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+
+        }
+        return orders;
+    }
 }

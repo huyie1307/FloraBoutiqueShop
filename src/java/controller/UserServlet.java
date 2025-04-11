@@ -1,6 +1,6 @@
 package controller;
-import dal.User;
-import DAO.UserDao;
+import entity.User;
+import dao.UserDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserServlet extends HttpServlet {
 
-    private final UserDao userDAO = new UserDao();
+    private final UserDAO userDAO = new UserDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -44,7 +44,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
             String keyword = request.getParameter("keyword");
             List<User> users = userDAO.searchUsers(keyword);
             request.setAttribute("users", users);
-            request.getRequestDispatcher("Customer.jsp").forward(request, response);
+            request.getRequestDispatcher("User.jsp").forward(request, response);
             return;
         }
     }
@@ -52,7 +52,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
     // Nếu không có action, lấy toàn bộ danh sách user
     List<User> users = userDAO.getAllUsers();
     request.setAttribute("users", users);
-    request.getRequestDispatcher("Customer.jsp").forward(request, response);
+    request.getRequestDispatcher("User.jsp").forward(request, response);
 }
 
 

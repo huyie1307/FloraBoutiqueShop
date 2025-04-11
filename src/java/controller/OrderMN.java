@@ -3,20 +3,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller;
-
-import dao.ProductDAO;
+import dao.OrderDAO;
+import entity.OrderMG;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
- * @author ASUS
+ * @author Huyie
  */
-public class DeleteProductController extends HttpServlet {
+public class OrderMN extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -27,7 +28,22 @@ public class DeleteProductController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-  
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet OrderMN</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet OrderMN at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -38,33 +54,14 @@ public class DeleteProductController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private final ProductDAO productDAO = new ProductDAO();
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            // Lấy ID sản phẩm cần xóa từ tham số URL
-            int productId = Integer.parseInt(request.getParameter("id"));
 
-            // Xóa sản phẩm từ cơ sở dữ liệu
-            boolean isDeleted = productDAO.deleteProduct(productId);
-
-            // Kiểm tra nếu xóa thành công
-            if (isDeleted) {
-                // Nếu xóa thành công, chuyển hướng về trang listProduct.jsp
-                response.sendRedirect("listProduct");
-            } else {
-                // Nếu xóa thất bại, hiển thị thông báo lỗi
-                request.setAttribute("errorMessage", "Không thể xóa sản phẩm!");
-                request.getRequestDispatcher("listProduct.jsp").forward(request, response);
-            }
-
-        } catch (Exception e) {
-            request.setAttribute("errorMessage", "Lỗi khi xóa sản phẩm: " + e.getMessage());
-            request.getRequestDispatcher("product.jsp").forward(request, response);
-        }
-
+        OrderDAO dao = new OrderDAO();
+        List<OrderMG> orders = dao.getAllOrders();
+        request.setAttribute("orders", orders);
+        request.getRequestDispatcher("OrderManagement.jsp").forward(request, response);
     }
 
     /**
@@ -78,7 +75,24 @@ public class DeleteProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    
+        String action = request.getParameter("action");
+        if ("updateStatus".equals(action)) {
+            String orderIdParam = request.getParameter("id");
+            String statusIDParam = request.getParameter("statusID");
+
+            try {
+                int orderID = Integer.parseInt(orderIdParam);
+                int statusID = Integer.parseInt(statusIDParam);
+
+                OrderDAO dao = new OrderDAO();
+                dao.updateStatus(orderID, statusID);
+                response.sendRedirect("order");
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Failed: " + e.getMessage());
+            }
+        }
+
     }
 
     /**
