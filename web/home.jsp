@@ -141,7 +141,7 @@
         </div>
         <!-- shop section start -->
         <div class="shop" id="shop">
-            <h1 class="heading">Our Best Products</h1>
+            <h1 class="heading">Our Products</h1>
 
             <div class="box-container" id="productList">
                 <c:forEach var="product" items="${sessionScope.products}">
@@ -170,30 +170,7 @@
         </div>
 
         <!-- contact section start -->
-        <section class="contact" id="contact">
-            <form action="">
-                <div class="heading">
-                    <h1>contact us</h1>
-                </div>
-                <div class="input-field">
-                    <label for="">name <sup>*</sup></label><br>
-                    <input type="text">
-                </div>
-                <div class="input-field">
-                    <label for="">email <sup>*</sup></label><br>
-                    <input type="email">
-                </div>
-                <div class="input-field">
-                    <label for="">number <sup>*</sup></label><br>
-                    <input type="number">
-                </div>
-                <div class="input-field">
-                    <label for="">message <sup>*</sup></label><br>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                </div>
-                <button class="btn">send message</button>
-            </form>
-        </section>
+     
         <section class="blog" id="blog">
             <h1 class="heading">our blog</h1>
             <div class="box-container">

@@ -108,7 +108,7 @@
                                                 <img src="https://ui-avatars.com/api/?name=${customer.name}&background=random" alt="Avatar" class="customer-avatar">
                                                 <div>
                                                     <a href="orderCustomer?userId=${customer.uID}" class="fw-bold text-decoration-none">${customer.name}</a>
-                                                    <div class="text-muted small">ID: ${customer.uID}</div>
+                                                    
                                                 </div>
                                             </div>
                                         </td>

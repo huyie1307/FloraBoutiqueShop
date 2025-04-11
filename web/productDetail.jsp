@@ -198,16 +198,16 @@
                 <!-- Chi tiết sản phẩm -->
                 <div class="product-details">
                     <h3>Chi tiết sản phẩm</h3>
-                    <p><strong>Danh mục:</strong> ${productDetail.getCategory()}</p>
-                    <p><strong>Loại:</strong> ${productDetail.getCategory()}</p>
+                    <p><strong>Danh mục:</strong> ${productDetail.getCategory().getName()}</p>
+                    <p><strong>Loại:</strong> ${productDetail.getName()}</p>
                     <p><strong>Mô tả:</strong> ${productDetail.getDescription()}</p>
                     <p><strong>Gửi từ:</strong> Hà Nội</p>
                 </div>
                 <!-- Đánh giá sản phẩm -->
                 <div class="product-details">
                     <h3>Đánh giá sản phẩm</h3>
-                    <p><strong>Danh mục:</strong> ${productDetail.getCategory()}</p>
-                    <p><strong>Loại:</strong> ${productDetail.getCategory()}</p>
+                    <p><strong>Danh mục:</strong> ${productDetail.getCategory().getName()}</p>
+                    <p><strong>Loại:</strong> ${productDetail.getName()}</p>
                     <p><strong>Mô tả:</strong> ${productDetail.getDescription()}</p>
                     <p><strong>Gửi từ:</strong> Hà Nội</p>
                 </div>
