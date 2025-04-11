@@ -12,7 +12,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <!-- custum css -->
         <link rel="stylesheet" href="style.css">
-        
     </head>
     <body>
         <!-- header section start -->
@@ -141,7 +140,7 @@
         </div>
         <!-- shop section start -->
         <div class="shop" id="shop">
-            <h1 class="heading">Our Products</h1>
+            <h1 class="heading">Our Best Products</h1>
 
             <div class="box-container" id="productList">
                 <c:forEach var="product" items="${sessionScope.products}">
@@ -170,7 +169,30 @@
         </div>
 
         <!-- contact section start -->
-     
+        <section class="contact" id="contact">
+            <form action="">
+                <div class="heading">
+                    <h1>contact us</h1>
+                </div>
+                <div class="input-field">
+                    <label for="">name <sup>*</sup></label><br>
+                    <input type="text">
+                </div>
+                <div class="input-field">
+                    <label for="">email <sup>*</sup></label><br>
+                    <input type="email">
+                </div>
+                <div class="input-field">
+                    <label for="">number <sup>*</sup></label><br>
+                    <input type="number">
+                </div>
+                <div class="input-field">
+                    <label for="">message <sup>*</sup></label><br>
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                </div>
+                <button class="btn">send message</button>
+            </form>
+        </section>
         <section class="blog" id="blog">
             <h1 class="heading">our blog</h1>
             <div class="box-container">
@@ -182,7 +204,7 @@
                     <div class="detail">
                         <h1>Welcome to Flora Boutique – Your Floral Haven</h1>
                         <p>Flowers are not just gifts; they convey emotions, love, and appreciation. At Flora Boutique, we specialize in crafting flower arrangements that leave lasting impressions.Our floral designs add meaning to every occasion.</p>
-                        <a href="Blog.jsp" class="btn">read more</a>
+                        <a href="listBlog" class="btn">read more</a>
                     </div>
 
                 </div>
@@ -194,7 +216,7 @@
                     <div class="detail">
                         <h1>How to Choose the Right Flowers for Every Occasion</h1>
                         <p>Flowers bring life and beauty to any space. At Flora Boutique, we offer exquisite floral decorations that enhance your home or office. Discover how our creative arrangements can transform your environment and elevate your mood.</p>
-                        <a href="Blog.jsp" class="btn">read more</a>
+                        <a href="listBlog" class="btn">read more</a>
                     </div>
 
                 </div>
@@ -206,7 +228,7 @@
                     <div class="detail">
                         <h1>The Meaning Behind Popular Flowers</h1>
                         <p>Your wedding day deserves breathtaking floral arrangements. At Flora Boutique, we create wedding bouquets and floral decorations that complement your theme and style, ensuring a picture-perfect celebration filled with beauty and romance.</p>
-                        <a href="Blog.jsp" class="btn">read more</a>
+                        <a href="listBlog" class="btn">read more</a>
                     </div>
 
                 </div>
