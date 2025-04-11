@@ -35,7 +35,7 @@ public class LoginManagerServlet extends HttpServlet {
         LoginDAO loginDAO = new LoginDAO();
         User user = loginDAO.login(username, password);
 
-        if (user == null) {
+       if (user == null) {
             request.setAttribute("message", "Thông tin đăng nhập không hợp lệ. Vui lòng thử lại.");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
         } else {
@@ -43,9 +43,11 @@ public class LoginManagerServlet extends HttpServlet {
             session.setAttribute("user", user);
             session.setMaxInactiveInterval(1800); // Session 30 phút
 
-            System.out.println(user);
-
-            response.sendRedirect("home"); // Redirect thay vì forward
+            if (user.isIsAdmin()) {
+                response.sendRedirect("AdminController"); // Trang admin
+            } else {
+                response.sendRedirect("home"); // Trang user thường
+            }
         }
     }
 }

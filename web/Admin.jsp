@@ -38,10 +38,10 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <h4 class="text-center text-white">Admin Panel</h4>
-            <a href="admin?action=dashboard">📊 Dashboard</a>
-            <a href="admin?action=orders">📦 Orders</a>
-            <a href="admin?action=revenue">📈 Revenue</a>
-            <a href="admin?action=cus">👤 Users</a>
+            <a href="AdminController?action=dashboard">📊 Dashboard</a>
+            <a href="AdminController?action=orders">📦 Orders</a>
+            <a href="AdminController?action=revenue">📈 Revenue</a>
+            <a href="AdminController?action=cus">👤 Users</a>
             <a href="adminListProduct">🛒 List Products</a> <!-- Liên kết tới trang quản lý sản phẩm -->
             <a href="listCustomer">👥 List Customers</a> <!-- Liên kết tới trang quản lý khách hàng -->
             <a href="listReview">⭐ List Reviews</a> 
