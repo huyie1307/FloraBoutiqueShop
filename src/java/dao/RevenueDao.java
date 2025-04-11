@@ -63,15 +63,15 @@ public Map<String, Integer> getRevenueByDate(String filter) {
     switch (filter) {
         case "day":
             sql = "SELECT CONVERT(VARCHAR(10), orderDate, 120) AS [Date], SUM(totalPrice) AS Revenue " +
-                    "FROM [Order] WHERE statusID = 4 GROUP BY CONVERT(VARCHAR(10), orderDate, 120) ORDER BY [Date]";
+                    "FROM [Order] WHERE statusID = 3 GROUP BY CONVERT(VARCHAR(10), orderDate, 120) ORDER BY [Date]";
             break;
         case "month":
             sql = "SELECT FORMAT(orderDate, 'yyyy-MM') AS [Month], SUM(totalPrice) AS Revenue " +
-                    "FROM [Order] WHERE statusID = 4 GROUP BY FORMAT(orderDate, 'yyyy-MM') ORDER BY [Month]";
+                    "FROM [Order] WHERE statusID = 3 GROUP BY FORMAT(orderDate, 'yyyy-MM') ORDER BY [Month]";
             break;
         case "year":
             sql = "SELECT YEAR(orderDate) AS [Year], SUM(totalPrice) AS Revenue " +
-                    "FROM [Order] WHERE statusID = 4 GROUP BY YEAR(orderDate) ORDER BY [Year]";
+                    "FROM [Order] WHERE statusID = 3 GROUP BY YEAR(orderDate) ORDER BY [Year]";
             break;
         default:
             return revenueData;
