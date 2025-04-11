@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="checkLogin.jsp" %>
 
 <!DOCTYPE html>
 <html>
@@ -127,6 +128,14 @@
             </c:when>
             <c:otherwise>
                 <c:forEach var="blog" items="${blogs}">
+                    <%
+                        dao.LikeDAO likeDAO = new dao.LikeDAO();
+                        boolean liked = false;
+                        entity.User currentUser = (entity.User) session.getAttribute("user");
+                        if (currentUser != null) {
+                            liked = likeDAO.hasUserLiked(((entity.Blog)pageContext.findAttribute("blog")).getBlogID(), currentUser.getuID());
+                        } 
+                    %>
                     <div class="post">
                         <p><strong>Người đăng:</strong> ${blog.author}</p>
                         <p><strong>Tiêu đề:</strong> ${blog.title}</p>
@@ -134,12 +143,12 @@
                         <c:if test="${not empty blog.imageURL}">
                             <img src="${blog.imageURL}" alt="Hình ảnh bài đăng">
                         </c:if>
-                        <!-- Nút like -->
-                        <!-- Nút like -->
-                        <button class="heart" data-blogid="${blog.blogID}">❤️</button>
+
+                        <!-- Nút like (đã cập nhật có điều kiện liked) -->
+                        <button class="heart <%= liked ? "liked" : "" %>" data-blogid="${blog.blogID}">❤️</button>
                         <span id="like-count-${blog.blogID}">${blog.likeCount}</span> lượt thích
 
-                        <!-- Thêm bình luận -->
+                        <!-- Form bình luận -->
                         <form action="react" method="post">
                             <input type="text" name="content" placeholder="Viết bình luận..." required />
                             <input type="hidden" name="blogID" value="${blog.blogID}" />
@@ -163,20 +172,24 @@
     <script>
         document.querySelectorAll('.heart').forEach(button => {
             button.addEventListener('click', function () {
-                let blogID = this.getAttribute('data-blogid');
+                const blogID = this.getAttribute('data-blogid');
+                const userID = '${sessionScope.user.uID}';
+                const liked = this.classList.contains('liked');
+                const action = liked ? 'unlike' : 'like';
 
                 fetch('react', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: 'action=like&blogID=' + blogID
+                    body: 'action=' + action + '&blogID=' + blogID + '&userID=' + userID
                 })
                         .then(response => response.text())
                         .then(newLikeCount => {
                             document.getElementById('like-count-' + blogID).innerText = newLikeCount;
-                            this.classList.add('liked'); // Thêm hiệu ứng màu đỏ
+                            this.classList.toggle('liked');
                         });
             });
         });
     </script>
+
 </body>
 </html>
