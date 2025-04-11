@@ -1,137 +1,176 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Customer Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.bootstrap5.min.css" rel="stylesheet">
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
-        <meta name="author" content="AdminKit">
-        <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
 
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet">
+        .customer-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            background: #fff;
+        }
 
-        <link href="css/light.css" rel="stylesheet">
-        <link href="css/dark.css" rel="stylesheet">
+        .customer-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
 
-        <title>Customer List</title>
-    </head>
+        .customer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
 
-    <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
-        <div class="sidebar">
-            <jsp:include page="Admin.jsp"/>
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 2px;
+        }
+
+        .highlight-row {
+            background-color: rgba(78, 115, 223, 0.1) !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter {
+            display: none;
+        }
+
+        #filterInput {
+            max-width: 300px;
+            border-radius: 30px;
+            padding-left: 15px;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f2f4f7;
+        }
+    </style>
+</head>
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
+    <div class="sidebar">
+        <jsp:include page="Admin.jsp" />
+    </div>
+
+    <main class="content">
+        <div class="container-fluid p-4">
+            <div class="mb-4">
+                <h1 class="h3">Customer Management</h1>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div>
+                        <input type="text" id="filterInput" class="form-control" placeholder="🔍 Search name, phone or address...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card customer-card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Customer List</h5>
+                    <p class="card-subtitle text-muted">Below is the list of all registered customers</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="customerTable" class="table table-hover align-middle">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Customer</th>
+                                    <th>Date of Birth</th>
+                                    <th>Contact</th>
+                                    <th>Address</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${customer}" var="customer" varStatus="status">
+                                    <tr data-customer-id="${customer.uID}">
+                                        <td>${status.index + 1}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://ui-avatars.com/api/?name=${customer.name}&background=random" alt="Avatar" class="customer-avatar">
+                                                <div>
+                                                    <a href="orderCustomer?userId=${customer.uID}" class="fw-bold text-decoration-none">${customer.name}</a>
+                                                    <div class="text-muted small">ID: ${customer.uID}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><fmt:formatDate value="${customer.dob}" pattern="dd/MM/yyyy" /></td>
+                                        <td>${customer.phone}</td>
+                                        <td>${customer.address}</td>
+                                        <td>
+                                            <a href="orderCustomer?userId=${customer.uID}" class="btn btn-sm btn-outline-primary action-btn" title="View Orders">
+                                                <i class="bi bi-cart3"></i>
+                                            </a>
+                                            <a href="updateCustomer?id=${customer.uID}" class="btn btn-sm btn-outline-secondary action-btn" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
+    </main>
 
-        <main class="content">
-            <div class="container-fluid p-0">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">Customer List</h3>
-                                <p class="card-text">Below is the list of all customers who are not admins.</p>
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.colVis.min.js"></script>
 
-                                <!-- Bảng dữ liệu khách hàng -->
-                                <table id="datatables-buttons" class="table table-striped" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Date of Birth</th>
-                                            <th>Phone</th>
-                                            <th>Address</th>
-                                    
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${customer}" var="customer" varStatus="status">
-                                            <tr>
-                                                <td>${status.index+1}</td>
-                                                <td>
-                                                    <!-- Tên khách hàng giờ trở thành một liên kết, người dùng chỉ cần click vào tên -->
-                                                    <a href="updateCustomer?id=${customer.uID}" class="text-decoration-none">
-                                                        ${customer.name}
-                                                    </a>
-                                                </td>
-                                                <td>${customer.dob}</td>
-                                                <td>${customer.phone}</td>
-                                                <td>${customer.address}</td>
-                                                
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+    <script>
+        $(document).ready(function () {
+            const table = $('#customerTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                responsive: true,
+                pageLength: 4,
+                lengthChange: false,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search...",
+                    paginate: {
+                        previous: "«",
+                        next: "»"
+                    },
+                    info: "Showing _START_ to _END_ of _TOTAL_ customers"
+                }
+            });
 
-        <!-- Modal View Orders -->
-        <c:forEach items="${customer}" var="customer">
-            <div class="modal fade" id="viewOrdersModal${customer.uID}" tabindex="-1" aria-labelledby="viewOrdersModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="viewOrdersModalLabel">Order History for ${customer.name}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" id="orderHistoryContent${customer.uID}">
-                            <!-- Lịch sử đơn hàng sẽ được tải qua Ajax -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
-
-        <!-- JavaScript -->
-        <script src="js/app.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="js/datatables.js"></script>
-
-        <script>
-                                                        function loadOrderHistory(customerId) {
-                                                            // Gửi Ajax request để lấy lịch sử đơn hàng của khách hàng
-                                                            fetch('getOrderHistory?customerId=' + customerId)
-                                                                    .then(response => response.json())
-                                                                    .then(data => {
-                                                                        let orderHistoryContent = document.getElementById('orderHistoryContent' + customerId);
-                                                                        let orderHistoryHtml = '<table class="table table-striped"><thead><tr><th>Order ID</th><th>Product</th><th>Quantity</th><th>Total Price</th><th>Status</th></tr></thead><tbody>';
-
-                                                                        // Duyệt qua lịch sử đơn hàng và tạo bảng hiển thị
-                                                                        data.forEach(order => {
-                                                                            orderHistoryHtml += '<tr>' +
-                                                                                    '<td>' + order.orderId + '</td>' +
-                                                                                    '<td>' + order.productName + '</td>' +
-                                                                                    '<td>' + order.quantity + '</td>' +
-                                                                                    '<td>' + order.totalPrice + '</td>' +
-                                                                                    '<td>' + order.status + '</td>' +
-                                                                                    '</tr>';
-                                                                        });
-
-                                                                        orderHistoryHtml += '</tbody></table>';
-                                                                        orderHistoryContent.innerHTML = orderHistoryHtml;  // Gán HTML vào modal
-                                                                    })
-                                                                    .catch(error => console.error('Error loading order history:', error));
-                                                        }
-
-                                                        document.addEventListener("DOMContentLoaded", function () {
-                                                            var datatablesButtons = $("#datatables-buttons").DataTable({
-                                                                responsive: true,
-                                                                lengthChange: false,
-                                                                buttons: ["copy", "print"]
-                                                            });
-                                                            datatablesButtons.buttons().container().appendTo("#datatables-buttons_wrapper .col-md-6:eq(0)");
-                                                        });
-        </script>
-        <script>
-            
-        </script>
-    </body>
-
+            // Custom filter
+            $('#filterInput').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        });
+    </script>
+</body>
 </html>
