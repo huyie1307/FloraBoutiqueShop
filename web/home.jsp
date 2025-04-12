@@ -28,7 +28,7 @@
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                         <a href="listorder">My Cart</a>
-                        <a href="#">My Order</a>
+                        <a href="my-order">My Order</a>
                         <a href="logout">Logout</a>
                     </c:when>
 

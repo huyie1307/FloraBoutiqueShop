@@ -84,7 +84,7 @@ public class CreateReviewController extends HttpServlet {
 
         orderDetailDAO.updateReviewIdInOrderDetail(orderDetailId, reviewId);
 
-        response.sendRedirect("/WebApplication1/my-order");
+        response.sendRedirect("my-order");
 
     }
 

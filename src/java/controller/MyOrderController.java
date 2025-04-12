@@ -58,7 +58,7 @@ public class MyOrderController extends HttpServlet {
         User user = (User) session.getAttribute("user");
         
         if(user == null){
-            response.sendRedirect("/WebApplication1/login");
+            response.sendRedirect("login");
             return;
         }
         
