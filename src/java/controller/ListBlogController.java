@@ -1,31 +1,24 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller;
 
-/**
- *
- * @author admin
- */
-import dao.OrderDAO;
+import dao.BlogDAO;
+import entity.Blog;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import entity.*;
+
 /**
  *
- * @author daoducdanh
+ * @author ASUS
  */
-@WebServlet(name = "MyOrderController", urlPatterns = {"/my-order"})
-public class MyOrderController extends HttpServlet {
-    private OrderDAO orderDAO = new OrderDAO();
+public class ListBlogController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,11 +29,6 @@ public class MyOrderController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -53,30 +41,11 @@ public class MyOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        
-        if(user == null){
-            response.sendRedirect("login");
-            return;
-        }
-        
-        String pageParam = request.getParameter("page");
-        int currentPage = pageParam != null ? Integer.parseInt(pageParam) : 1;
-        int limit = 4;
-        
-        List<Order> orders = orderDAO.getCustomerOrders(user.getuID());
-        long totalproducts = orderDAO.getOrderCountByAccountId(user.getuID());
-        int totalPages = (int) Math.ceil((double) totalproducts / limit);
-        
-        request.setAttribute("orders", orders);
-        request.setAttribute("currentPage", currentPage);
-        request.setAttribute("totalPages", totalPages);
-        
-        
-        request.getRequestDispatcher("my-order.jsp").forward(request, response);
+        BlogDAO blogDAO = new BlogDAO();
+        List<Blog> listBlog = blogDAO.getAllBlogs();
 
+        request.setAttribute("blogs", listBlog);
+        request.getRequestDispatcher("Blog.jsp").forward(request, response);
     }
 
     /**
@@ -90,7 +59,7 @@ public class MyOrderController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       
     }
 
     /**

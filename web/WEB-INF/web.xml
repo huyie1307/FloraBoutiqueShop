@@ -104,6 +104,14 @@
         <servlet-name>ManageOrderCustomerController</servlet-name>
         <servlet-class>controller.ManageOrderCustomerController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListBlogController</servlet-name>
+        <servlet-class>controller.ListBlogController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReactController</servlet-name>
+        <servlet-class>controller.ReactController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -207,5 +215,13 @@
     <servlet-mapping>
         <servlet-name>ManageOrderCustomerController</servlet-name>
         <url-pattern>/orderCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListBlogController</servlet-name>
+        <url-pattern>/listBlog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReactController</servlet-name>
+        <url-pattern>/react</url-pattern>
     </servlet-mapping>
 </web-app>

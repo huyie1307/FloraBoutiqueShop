@@ -168,7 +168,7 @@
                                         <td>${loop.index + 1}</td>
                                         <td>${order.note}</td>
                                         <td>${order.orderDate}</td>
-                                        <td>${order.totalPrice}đ</td>
+                                        <td>${order.total}đ</td>
                                         <td>${order.paymentMethod.methodName}</td>
                                         <td>${order.status.statusName}</td>
                                         <td><a href="my-order-detail?oid=${order.id}">
