@@ -206,10 +206,13 @@
                 <!-- Đánh giá sản phẩm -->
                 <div class="product-details">
                     <h3>Đánh giá sản phẩm</h3>
-                    <p><strong>Danh mục:</strong> ${productDetail.getCategory().getName()}</p>
-                    <p><strong>Loại:</strong> ${productDetail.getName()}</p>
-                    <p><strong>Mô tả:</strong> ${productDetail.getDescription()}</p>
-                    <p><strong>Gửi từ:</strong> Hà Nội</p>
+                    <div class="comments">
+                        <c:forEach var="comment" items="${blog.comments}">
+                            <div class="comment">
+                                <strong>${comment.userName}</strong>: ${comment.content}
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
             </c:if>
             <c:if test="${empty productDetail}">
