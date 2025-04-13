@@ -16,7 +16,7 @@
     <body>
         <!-- header section start -->
         <header>
-            <a href="index.html" class="logo"><img src="image/logo.png" alt="" width="100"></a>
+            <a href="home" class="logo"><img src="image/logo.png" alt="" width="100"></a>
             <div class="navbar">
                 <a href="home">home</a>
                 <a href="#services">services</a>

@@ -65,7 +65,9 @@ public class CheckoutServlet extends HttpServlet {
 
         // Lấy danh sách cart từ session
         List<Cart> carts = (List<Cart>) session.getAttribute("carts");
-
+        if (carts == null || carts.isEmpty()) {
+            request.getRequestDispatcher("OrderFail.jsp").forward(request, response);
+        }
         // Tính tổng tiền đơn hàng
         BigDecimal totalPrice = BigDecimal.ZERO;
         for (Cart cart : carts) {
